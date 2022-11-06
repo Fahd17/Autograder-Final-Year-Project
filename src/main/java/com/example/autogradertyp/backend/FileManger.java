@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.example.autogradertyp.views;
+package com.example.autogradertyp.backend;
 
 import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
 import java.io.File;
