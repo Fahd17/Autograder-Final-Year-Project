@@ -5,11 +5,22 @@ import java.io.*;
 public class JavaGrader {
 
     String programsdirectory = "Users\\fahds\\IdeaProjects\\autograder-TYP\\submissions_directory";
+    Process pro = null;
     String programOutput;
     String fileName;
     String testCaseInput;
     String testCaseOutput;
+    Boolean result;
 
+    /**
+     * A method to grade a java program
+     *
+     * @param mainFileName   The name of the java file that have the main method
+     * @param testCaseInput  The test case input.
+     * @param testCaseOutput The test case expected output.
+     * @return A boolean to indicate if the programs passed the test case.
+     * @throws IOException
+     */
     public boolean gradeProgram(String mainFileName, String testCaseInput, String testCaseOutput) throws IOException {
         this.fileName = mainFileName;
         this.testCaseInput = testCaseInput;
@@ -18,38 +29,62 @@ public class JavaGrader {
         try {
 
             runProcess("javac " + mainFileName + ".java");
+            pro.waitFor();
             runProcess("java " + mainFileName);
+
+            inputToProcess();
+
+            readFromProcess(pro.getInputStream());
+            readFromProcess(pro.getErrorStream());
+
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return programOutput.equalsIgnoreCase(testCaseOutput);
+        result = programOutput.equalsIgnoreCase(testCaseOutput);
+        return result;
     }
 
+    /**
+     * A method to execute commands in cmd
+     *
+     * @param command The command that will be executed
+     * @throws Exception
+     */
     private void runProcess(String command) throws Exception {
-        Process pro = Runtime.getRuntime().exec(command);
+
+        pro = Runtime.getRuntime().exec(command);
+    }
+
+    /**
+     * A method that inputs a value to a process
+     *
+     * @throws IOException
+     */
+    private void inputToProcess() throws IOException {
 
         //inputting test case input
         pro.getOutputStream();
         BufferedWriter out = new BufferedWriter(new OutputStreamWriter(pro.getOutputStream()));
         out.write(testCaseInput);
         out.close();
-
-        printLines(command + " stdout:", pro.getInputStream());
-        printLines(command + " stderr:", pro.getErrorStream());
-
-        pro.waitFor();
     }
 
-    private void printLines(String name, InputStream ins) throws Exception {
+    /**
+     * A method that reads process output.
+     *
+     * @param ins Input stream of the process.
+     * @throws Exception
+     */
+    private void readFromProcess(InputStream ins) throws Exception {
         String line = null;
         BufferedReader in = new BufferedReader(new InputStreamReader(ins));
 
         //reading the program output
         while ((line = in.readLine()) != null) {
 
-            System.out.println(name + " " + line);
+            System.out.println(line);
             programOutput = line;
         }
     }

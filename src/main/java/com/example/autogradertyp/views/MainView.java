@@ -47,7 +47,7 @@ public class MainView extends VerticalLayout {
         add(b);
         b.addClickListener(e -> {
             try {
-                System.out.println(x23.gradeProgram("p", "2","25"));
+                System.out.println(x23.gradeProgram("p", "2","24"));
 
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
