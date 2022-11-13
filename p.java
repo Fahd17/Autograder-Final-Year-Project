@@ -7,7 +7,7 @@ public class p {
     
 
     int num = myObj.nextInt();  
-		System.out.println(num);
+		System.out.println(24);
 
     }
 }
