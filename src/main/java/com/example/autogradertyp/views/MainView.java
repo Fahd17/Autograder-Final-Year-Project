@@ -1,5 +1,6 @@
 package com.example.autogradertyp.views;
 
+import com.example.autogradertyp.backend.Assignment;
 import com.example.autogradertyp.backend.FileManger;
 import com.example.autogradertyp.backend.JavaGrader;
 import com.vaadin.flow.component.Component;
@@ -16,9 +17,11 @@ import java.util.ArrayList;
 @Route("home")
 public class MainView extends VerticalLayout {
 
+    static  ArrayList<Assignment> assignments = new ArrayList<>();
     public MainView() {
 
         JavaGrader x23 = new JavaGrader();
+
 
         ArrayList<Component> cars = new ArrayList<Component>();
         
@@ -34,6 +37,7 @@ public class MainView extends VerticalLayout {
         Upload upload = new Upload(memoryBuffer);
         upload.addFinishedListener(e -> {
 
+e.getFileName();
             fileManger.SaveUploadedFille(memoryBuffer);
             fileManger.createAFile();
 
@@ -47,7 +51,8 @@ public class MainView extends VerticalLayout {
         add(b);
         b.addClickListener(e -> {
             try {
-                System.out.println(x23.gradeProgram("p", "2","24"));
+                Assignment xx = AssignmentMenu.assignments.get(0);
+                System.out.println(x23.gradeProgram("p", xx.getTestCase().getTestCaseInput(),xx.getTestCase().getExpectedOutput()));
 
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
