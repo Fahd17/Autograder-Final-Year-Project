@@ -38,7 +38,7 @@ public class AssignmentMenu extends VerticalLayout {
                 for (Assignment assignment : assignments) {
 
                     Button assignmentChoice = new Button(assignment.getAssignmentName());
-                    assignmentChoice.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+                    //assignmentChoice.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
                     assignmentChoice.addClickListener(e ->
 
                             assignmentChoice.getUI().ifPresent(ui -> ui.navigate(SubmitAssignmentView.class,
@@ -53,6 +53,19 @@ public class AssignmentMenu extends VerticalLayout {
             }
 
         }
+
+        VerticalLayout bottomRow = new VerticalLayout();
+
+        bottomRow.setAlignItems(Alignment.END);
+
+        Button goBackButton = new Button("Back");
+        bottomRow.add(goBackButton);
+        add(bottomRow);
+
+        goBackButton.addClickListener(e ->
+
+                goBackButton.getUI().ifPresent(ui -> ui.navigate(MainMenu.class)));
+
     }
 
     public void createAssignment(String assignmentName, String assignmentID, String courseID, String testCaseInput, String expectedOutput) {

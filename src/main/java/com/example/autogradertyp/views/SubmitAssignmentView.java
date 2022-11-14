@@ -48,6 +48,19 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
                 throw new RuntimeException(ex);
             }
         });
+
+        VerticalLayout bottomRow = new VerticalLayout();
+
+        bottomRow.setAlignItems(Alignment.END);
+
+        Button goBackButton = new Button("Back");
+        bottomRow.add(goBackButton);
+        add(bottomRow);
+
+        goBackButton.addClickListener(e ->
+
+                goBackButton.getUI().ifPresent(ui -> ui.navigate(MainMenu.class)));
+
     }
 
     @Override

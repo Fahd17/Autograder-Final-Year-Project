@@ -51,6 +51,19 @@ public class CreateAssignmentView extends VerticalLayout {
 
         });
 
+        VerticalLayout bottomRow = new VerticalLayout();
+
+        bottomRow.setAlignItems(Alignment.END);
+
+        Button goBackButton = new Button("Back");
+        bottomRow.add(goBackButton);
+        add(bottomRow);
+
+        goBackButton.addClickListener(e ->
+
+                goBackButton.getUI().ifPresent(ui -> ui.navigate(MainMenu.class)));
+
+
     }
 
 }
