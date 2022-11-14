@@ -1,7 +1,6 @@
 package com.example.autogradertyp.views;
 
 import com.example.autogradertyp.backend.Assignment;
-import com.example.autogradertyp.backend.FileManger;
 import com.example.autogradertyp.backend.JavaGrader;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Label;
@@ -12,7 +11,9 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -25,15 +26,13 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
 
     public SubmitAssignmentView() {
 
-        FileManger fileManger = new FileManger();
         MemoryBuffer memoryBuffer = new MemoryBuffer();
 
         Upload upload = new Upload(memoryBuffer);
         upload.addFinishedListener(e -> {
 
             this.submissionFileName = e.getFileName().replace(".java", "");
-            fileManger.SaveUploadedFille(memoryBuffer);
-            fileManger.createAFile();
+            SaveUploadedFile(memoryBuffer);
         });
 
         add(upload);
@@ -88,5 +87,23 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
         Label resultMessage = new Label(result + "");
         add(resultMessage);
 
+    }
+
+    private void SaveUploadedFile(MemoryBuffer memoryBuffer) {
+        InputStream inputStream = memoryBuffer.getInputStream();
+
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(".\\submission.java");
+            byte dataBuffer[] = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(dataBuffer, 0, 1024)) != -1) {
+                fileOutputStream.write(dataBuffer, 0, bytesRead);
+            }
+            fileOutputStream.close();
+
+        } catch (IOException IO) {
+            System.out.print("Invalid Path");
+
+        }
     }
 }
