@@ -1,6 +1,8 @@
 package com.example.autogradertyp.views;
 
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
@@ -23,13 +25,19 @@ public class CreateAssignmentView extends VerticalLayout {
         courseID.setLabel("Entre course ID:");
         add(courseID);
 
+        Label testCaseMessage = new Label("Entre test case information:");
+        add(testCaseMessage);
+        HorizontalLayout testCaseLayout = new HorizontalLayout();
+
         TextField testCaseInput = new TextField();
-        testCaseInput.setLabel("Entre test case input:");
-        add(testCaseInput);
+        testCaseInput.setLabel("Input:");
+        testCaseLayout.add(testCaseInput);
 
         TextField testCaseExpectedOutput = new TextField();
-        testCaseExpectedOutput.setLabel("Entre test case expected output:");
-        add(testCaseExpectedOutput);
+        testCaseExpectedOutput.setLabel("Expected output:");
+        testCaseLayout.add(testCaseExpectedOutput);
+        add(testCaseLayout);
+
 
         Button submit = new Button("Submit");
         add(submit);

@@ -6,7 +6,7 @@ public class p {
 	Scanner myObj = new Scanner(System.in);  
     
 
-    int num = myObj.nextInt();  
+    String num = myObj.nextInt();  
 		System.out.println(24);
 
     }
