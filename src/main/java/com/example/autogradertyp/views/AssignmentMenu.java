@@ -23,7 +23,7 @@ public class AssignmentMenu extends VerticalLayout {
 
     public AssignmentMenu() {
 
-        add(new H1(""));
+        add(new H1("Select assignment:"));
         HorizontalLayout assignmentsOptions = new HorizontalLayout();
 
         if (assignments != null) {
