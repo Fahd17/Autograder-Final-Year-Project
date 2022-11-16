@@ -8,8 +8,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
-@Theme(variant = Lumo.DARK)
+@Theme(variant = Lumo.LIGHT)
 @JsModule("@vaadin/vaadin-lumo-styles/presets/compact.js")
+//@Theme("mytheme")
 @SpringBootApplication
 public class AutograderTypApplication extends SpringBootServletInitializer implements AppShellConfigurator {
 

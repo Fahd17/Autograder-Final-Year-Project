@@ -38,7 +38,7 @@ public class AssignmentMenu extends VerticalLayout {
                 for (Assignment assignment : assignments) {
 
                     Button assignmentChoice = new Button(assignment.getAssignmentName());
-                    //assignmentChoice.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+                    assignmentChoice.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
                     assignmentChoice.addClickListener(e ->
 
                             assignmentChoice.getUI().ifPresent(ui -> ui.navigate(SubmitAssignmentView.class,
