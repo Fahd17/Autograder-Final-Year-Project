@@ -2,6 +2,8 @@ package com.example.autogradertyp.views;
 
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
@@ -12,8 +14,14 @@ public class MainMenu extends VerticalLayout {
 
 
     public MainMenu() {
+        HorizontalLayout bannerLayout = new HorizontalLayout();
+        H1 banner = new H1("Welcome to auto grade");
+        bannerLayout.add(banner);
 
-        HorizontalLayout horizontalLayout = new HorizontalLayout();
+        Label chooseMessage = new Label("Please select from the following options:");
+
+        HorizontalLayout optionsLayout = new HorizontalLayout();
+        setAlignItems(Alignment.CENTER);
 
 
         Button createAssignmentButton = new Button("Create an assignment");
@@ -23,7 +31,7 @@ public class MainMenu extends VerticalLayout {
 
         createAssignmentButton.setHeight(35, Unit.MM);
         createAssignmentButton.setWidth(70, Unit.MM);
-        horizontalLayout.add(createAssignmentButton);
+        optionsLayout.add(createAssignmentButton);
 
 
         Button submitAssignmentButton = new Button("Submit an assignment");
@@ -33,9 +41,9 @@ public class MainMenu extends VerticalLayout {
 
         submitAssignmentButton.setHeight(35, Unit.MM);
         submitAssignmentButton.setWidth(70, Unit.MM);
-        horizontalLayout.add(submitAssignmentButton);
+        optionsLayout.add(submitAssignmentButton);
 
-        add(horizontalLayout);
+        add(bannerLayout, chooseMessage, optionsLayout);
 
     }
 }

@@ -30,9 +30,9 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
 
         Upload upload = new Upload(memoryBuffer);
         upload.addFinishedListener(e -> {
-
+            SaveUploadedFile(memoryBuffer, e.getFileName());
             this.submissionFileName = e.getFileName().replace(".java", "");
-            SaveUploadedFile(memoryBuffer);
+
         });
 
         add(upload);
@@ -89,11 +89,11 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
 
     }
 
-    private void SaveUploadedFile(MemoryBuffer memoryBuffer) {
+    private void SaveUploadedFile(MemoryBuffer memoryBuffer, String name) {
         InputStream inputStream = memoryBuffer.getInputStream();
 
         try {
-            FileOutputStream fileOutputStream = new FileOutputStream(".\\submission.java");
+            FileOutputStream fileOutputStream = new FileOutputStream(".\\"+ name);
             byte dataBuffer[] = new byte[1024];
             int bytesRead;
             while ((bytesRead = inputStream.read(dataBuffer, 0, 1024)) != -1) {
