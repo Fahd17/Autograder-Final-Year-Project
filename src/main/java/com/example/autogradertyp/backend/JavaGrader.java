@@ -11,6 +11,7 @@ public class JavaGrader {
     String testCaseInput;
     String testCaseOutput;
     Boolean result;
+    String absolutePath = System.getProperty("user.dir");
 
     /**
      * A method to grade a java program
@@ -27,10 +28,10 @@ public class JavaGrader {
         this.testCaseOutput = testCaseOutput;
 
         try {
-
-            runProcess("javac " + mainFileName + ".java");
+            
+            runProcess("javac submissions_directory\\" + mainFileName + ".java");
             pro.waitFor();
-            runProcess("java " + mainFileName);
+            runProcess("java -classpath " + absolutePath + "\\submissions_directory " + mainFileName);
 
             inputToProcess();
 

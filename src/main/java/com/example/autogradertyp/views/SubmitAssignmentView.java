@@ -93,7 +93,7 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
         InputStream inputStream = memoryBuffer.getInputStream();
 
         try {
-            FileOutputStream fileOutputStream = new FileOutputStream(".\\"+ name);
+            FileOutputStream fileOutputStream = new FileOutputStream(".\\submissions_directory\\"+ name);
             byte dataBuffer[] = new byte[1024];
             int bytesRead;
             while ((bytesRead = inputStream.read(dataBuffer, 0, 1024)) != -1) {
