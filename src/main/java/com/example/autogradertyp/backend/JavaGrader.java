@@ -22,13 +22,14 @@ public class JavaGrader {
      * @return A boolean to indicate if the programs passed the test case.
      * @throws IOException
      */
-    public boolean gradeProgram(String mainFileName, String testCaseInput, String testCaseOutput) throws IOException {
+    public boolean gradeProgram(String mainFileName, String testCaseInput, String testCaseOutput)
+            throws IOException {
         this.fileName = mainFileName;
         this.testCaseInput = testCaseInput;
         this.testCaseOutput = testCaseOutput;
 
         try {
-            
+
             runProcess("javac submissions_directory\\" + mainFileName + ".java");
             pro.waitFor();
             runProcess("java -classpath " + absolutePath + "\\submissions_directory " + mainFileName);

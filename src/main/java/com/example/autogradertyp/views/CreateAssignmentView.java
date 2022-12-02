@@ -39,7 +39,7 @@ public class CreateAssignmentView extends VerticalLayout {
         add(testCaseLayout);
 
 
-        Button submit = new Button("Submit");
+        Button submit = new Button("Create");
         add(submit);
 
         AssignmentMenu assignmentMenu = new AssignmentMenu();

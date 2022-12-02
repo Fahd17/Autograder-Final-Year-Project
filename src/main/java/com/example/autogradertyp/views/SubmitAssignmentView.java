@@ -3,6 +3,7 @@ package com.example.autogradertyp.views;
 import com.example.autogradertyp.backend.Assignment;
 import com.example.autogradertyp.backend.JavaGrader;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.upload.Upload;
@@ -25,6 +26,8 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
     String submissionFileName;
 
     public SubmitAssignmentView() {
+
+        add(new H1("Upload submission:"));
 
         MemoryBuffer memoryBuffer = new MemoryBuffer();
 
@@ -84,7 +87,13 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
         boolean result = javaGrader.gradeProgram(submissionFileName, targetAssignment.getTestCase().getTestCaseInput(),
                 targetAssignment.getTestCase().getExpectedOutput());
 
-        Label resultMessage = new Label(result + "");
+        Label resultMessage;
+        if (result){
+             resultMessage = new Label("Well done, your submission is correct.");
+        }else{
+            resultMessage = new Label( "Your submission is incorrect!");
+        }
+
         add(resultMessage);
 
     }
