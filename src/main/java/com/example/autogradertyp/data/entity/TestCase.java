@@ -30,6 +30,13 @@ public class TestCase {
         this.expectedOutput = expectedOutput;
     }
 
+    public void setTestCaseInput(String testCaseInput) {
+        this.testCaseInput = testCaseInput;
+    }
+
+    public void setExpectedOutput(String expectedOutput) {
+        this.expectedOutput = expectedOutput;
+    }
 
     public String getTestCaseInput() {
         return testCaseInput;
