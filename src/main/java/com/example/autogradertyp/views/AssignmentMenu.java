@@ -1,7 +1,9 @@
 package com.example.autogradertyp.views;
 
-import com.example.autogradertyp.backend.Assignment;
-import com.example.autogradertyp.backend.TestCase;
+
+import com.example.autogradertyp.data.entity.Assignment;
+import com.example.autogradertyp.data.entity.TestCase;
+import com.example.autogradertyp.data.service.AssignmentService;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -13,68 +15,71 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteParameters;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Route("assignment-menu")
 public class AssignmentMenu extends VerticalLayout {
 
-    static ArrayList<Assignment> assignments = new ArrayList<>();
+    @Autowired
+    private AssignmentService assignmentService;
 
     public AssignmentMenu() {
 
-        add(new H1("Select assignment:"));
-        HorizontalLayout assignmentsOptions = new HorizontalLayout();
+        Button submit = new Button("Show");
+        add(submit);
 
-        if (assignments != null) {
 
-            if (assignments.size() == 0) {
+        submit.addClickListener(e1 -> {
+            List<Assignment> assignments = assignmentService.getAllAssignments();
+            add(new H1("Select assignment:"));
+            HorizontalLayout assignmentsOptions = new HorizontalLayout();
 
-                Label message = new Label("Not assignments available");
-                add(message);
+            if (assignments != null) {
 
-            } else {
+                if (assignments.size() == 0) {
 
-                for (Assignment assignment : assignments) {
+                    Label message = new Label("Not assignments available");
+                    add(message);
 
-                    Button assignmentChoice = new Button(assignment.getAssignmentName());
-                    assignmentChoice.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-                    assignmentChoice.addClickListener(e ->
+                } else {
 
-                            assignmentChoice.getUI().ifPresent(ui -> ui.navigate(SubmitAssignmentView.class,
-                                    new RouteParameters("assignment-ID", assignment.getAssignmentID()))));
+                    for (Assignment assignment : assignments) {
 
-                    assignmentChoice.setHeight(30, Unit.MM);
-                    assignmentChoice.setWidth(60, Unit.MM);
-                    assignmentsOptions.add(assignmentChoice);
+                        Button assignmentChoice = new Button(assignment.getAssignmentName());
+                        assignmentChoice.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+                        assignmentChoice.addClickListener(e ->
 
+                                assignmentChoice.getUI().ifPresent(ui -> ui.navigate(SubmitAssignmentView.class,
+                                        new RouteParameters("assignment-ID", assignment.getAssignmentID()))));
+
+                        assignmentChoice.setHeight(30, Unit.MM);
+                        assignmentChoice.setWidth(60, Unit.MM);
+                        assignmentsOptions.add(assignmentChoice);
+
+                    }
+                    add(assignmentsOptions);
                 }
-                add(assignmentsOptions);
+
             }
 
-        }
+            VerticalLayout bottomRow = new VerticalLayout();
 
-        VerticalLayout bottomRow = new VerticalLayout();
+            bottomRow.setAlignItems(Alignment.END);
 
-        bottomRow.setAlignItems(Alignment.END);
+            Button goBackButton = new Button("Back");
+            bottomRow.add(goBackButton);
+            add(bottomRow);
 
-        Button goBackButton = new Button("Back");
-        bottomRow.add(goBackButton);
-        add(bottomRow);
+            goBackButton.addClickListener(e ->
 
-        goBackButton.addClickListener(e ->
-
-                goBackButton.getUI().ifPresent(ui -> ui.navigate(MainMenu.class)));
-
-    }
-
-    public void createAssignment(String assignmentName, String assignmentID, String courseID, String testCaseInput, String expectedOutput) {
-
-        TestCase testCase = new TestCase(testCaseInput, expectedOutput);
-        Assignment assignment = new Assignment(assignmentName, assignmentID, courseID, testCase);
-
-        assignments.add(assignment);
+                    goBackButton.getUI().ifPresent(ui -> ui.navigate(MainMenu.class)));
+        });
 
     }
+
+
 
 }

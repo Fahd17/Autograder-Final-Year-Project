@@ -1,7 +1,9 @@
 package com.example.autogradertyp.views;
 
-import com.example.autogradertyp.backend.Assignment;
 import com.example.autogradertyp.backend.JavaGrader;
+import com.example.autogradertyp.data.entity.Assignment;
+import com.example.autogradertyp.data.service.AssignmentService;
+import com.example.autogradertyp.data.service.TestCaseService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Label;
@@ -11,18 +13,24 @@ import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Route("submit-assignment/:assignment-ID?")
 public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterObserver {
 
+    @Autowired
+    private AssignmentService assignmentService;
+
+    @Autowired
+    private TestCaseService testCaseService;
     Assignment targetAssignment;
-    ArrayList<Assignment> assignments;
     String submissionFileName;
 
     public SubmitAssignmentView() {
@@ -68,7 +76,7 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
 
-        assignments = AssignmentMenu.assignments;
+        List<Assignment> assignments = assignmentService.getAllAssignments();
 
         Optional<String> assignmentID = beforeEnterEvent.getRouteParameters().get("assignment-ID");
 
