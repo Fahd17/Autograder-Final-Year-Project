@@ -74,8 +74,6 @@ public class CreateAssignmentView extends VerticalLayout {
         goBackButton.addClickListener(e ->
 
                 goBackButton.getUI().ifPresent(ui -> ui.navigate(MainMenu.class)));
-
-
     }
 
 }
