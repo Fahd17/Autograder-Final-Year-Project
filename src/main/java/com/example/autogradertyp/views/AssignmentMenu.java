@@ -23,16 +23,8 @@ import java.util.List;
 @Route("assignment-menu")
 public class AssignmentMenu extends VerticalLayout {
 
-    @Autowired
-    private AssignmentService assignmentService;
+    public AssignmentMenu(AssignmentService assignmentService) {
 
-    public AssignmentMenu() {
-
-        Button submit = new Button("Show");
-        add(submit);
-
-
-        submit.addClickListener(e1 -> {
             List<Assignment> assignments = assignmentService.getAllAssignments();
             add(new H1("Select assignment:"));
             HorizontalLayout assignmentsOptions = new HorizontalLayout();
@@ -76,7 +68,6 @@ public class AssignmentMenu extends VerticalLayout {
             goBackButton.addClickListener(e ->
 
                     goBackButton.getUI().ifPresent(ui -> ui.navigate(MainMenu.class)));
-        });
 
     }
 
