@@ -1,16 +1,27 @@
 package com.example.autogradertyp.views;
 
+import com.example.autogradertyp.data.entity.Assignment;
+import com.example.autogradertyp.data.entity.TestCase;
+import com.example.autogradertyp.data.service.AssignmentService;
+import com.example.autogradertyp.data.service.TestCaseService;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 @Route("create-assignment")
 public class CreateAssignmentView extends VerticalLayout {
 
+    @Autowired
+    private AssignmentService assignmentService;
+
+    @Autowired
+    private TestCaseService testCaseService;
     public CreateAssignmentView() {
 
         TextField assignmentName = new TextField();
@@ -42,12 +53,13 @@ public class CreateAssignmentView extends VerticalLayout {
         Button submit = new Button("Create");
         add(submit);
 
-        AssignmentMenu assignmentMenu = new AssignmentMenu();
 
         submit.addClickListener(e -> {
 
-            assignmentMenu.createAssignment(assignmentName.getValue(), assignmentID.getValue(), courseID.getValue(),
-                    testCaseInput.getValue(), testCaseExpectedOutput.getValue());
+                TestCase testCase = new TestCase(testCaseInput.getValue(), testCaseExpectedOutput.getValue());
+                testCaseService.add(testCase);
+                Assignment assignment = new Assignment(assignmentName.getValue(), assignmentID.getValue(), courseID.getValue(), testCase);
+                assignmentService.saveAssigment(assignment);
 
         });
 
