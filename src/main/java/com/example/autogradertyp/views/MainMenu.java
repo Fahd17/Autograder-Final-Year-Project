@@ -1,19 +1,37 @@
 package com.example.autogradertyp.views;
 
+import com.example.autogradertyp.security.SecurityService;
 import com.vaadin.flow.component.Unit;
+import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouteParameters;
 
+import javax.annotation.security.PermitAll;
+
+@PermitAll
 @Route("main-menu")
 public class MainMenu extends VerticalLayout {
 
+    private final SecurityService securityService;
 
-    public MainMenu() {
+    public MainMenu(SecurityService securityService) {
+        this.securityService = securityService;
+        createHeader();
+        createBody();
+
+    }
+    private void createHeader() {
+        Button logout = new Button("Log out", e -> securityService.logout());
+        HorizontalLayout header = new HorizontalLayout(logout);
+        add(header);
+
+    }
+    private void createBody() {
         HorizontalLayout bannerLayout = new HorizontalLayout();
         H1 banner = new H1("Welcome to auto grade");
         bannerLayout.add(banner);
@@ -21,7 +39,7 @@ public class MainMenu extends VerticalLayout {
         Label chooseMessage = new Label("Please select from the following options:");
 
         HorizontalLayout optionsLayout = new HorizontalLayout();
-        setAlignItems(Alignment.CENTER);
+        setAlignItems(FlexComponent.Alignment.CENTER);
 
 
         Button createAssignmentButton = new Button("Create an assignment");
@@ -46,5 +64,7 @@ public class MainMenu extends VerticalLayout {
         add(bannerLayout, chooseMessage, optionsLayout);
 
     }
+
+
 }
 

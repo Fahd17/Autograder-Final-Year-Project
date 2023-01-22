@@ -15,6 +15,7 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.security.RolesAllowed;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@RolesAllowed({"ROLE_USER"})
 @Route("submit-assignment/:assignment-ID?")
 public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterObserver {
 

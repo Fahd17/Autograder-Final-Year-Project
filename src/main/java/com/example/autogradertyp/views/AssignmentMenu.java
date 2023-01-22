@@ -17,9 +17,12 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteParameters;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import java.util.ArrayList;
 import java.util.List;
 
+@PermitAll
 @Route("assignment-menu")
 public class AssignmentMenu extends VerticalLayout {
 

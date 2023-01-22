@@ -13,7 +13,9 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.security.RolesAllowed;
 
+@RolesAllowed({"ROLE_ADMIN"})
 @Route("create-assignment")
 public class CreateAssignmentView extends VerticalLayout {
 
