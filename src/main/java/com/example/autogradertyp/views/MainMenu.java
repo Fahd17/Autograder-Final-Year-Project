@@ -13,7 +13,7 @@ import com.vaadin.flow.router.Route;
 
 import javax.annotation.security.PermitAll;
 
-@PermitAll
+
 @Route("main-menu")
 public class MainMenu extends VerticalLayout {
 

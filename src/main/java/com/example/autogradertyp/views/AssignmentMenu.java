@@ -22,7 +22,7 @@ import javax.annotation.security.RolesAllowed;
 import java.util.ArrayList;
 import java.util.List;
 
-@PermitAll
+
 @Route("assignment-menu")
 public class AssignmentMenu extends VerticalLayout {
 
