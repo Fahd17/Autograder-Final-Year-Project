@@ -10,10 +10,12 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.annotation.security.PermitAll;
 
-
+@PermitAll
 @Route("main-menu")
 public class MainMenu extends VerticalLayout {
 
@@ -28,7 +30,6 @@ public class MainMenu extends VerticalLayout {
     private void createHeader() {
         Button logout = new Button("Log out", e -> securityService.logout());
         HorizontalLayout header = new HorizontalLayout(logout);
-        add(header);
 
     }
     private void createBody() {

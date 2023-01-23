@@ -26,12 +26,7 @@ import java.util.Collections;
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
 	private final LoginForm login = new LoginForm();
-	@Autowired
-	SecurityUserDetailsService userDetailsManager;
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-
-	public LoginView(SecurityUserDetailsService userDetailsManager, PasswordEncoder passwordEncoder){
+	public LoginView(){
 
 		addClassName("login-view");
 		setSizeFull();
@@ -41,22 +36,6 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 		login.setAction("login");
 
 		add(new H1("Login"), login);
-
-		Button x1 = new Button();
-		x1.addClickListener(e -> {
-
-			addUser("admin13"
-					, "12345678");
-		});
-		add(x1);
-	}
-
-	public void addUser(String username, String password) {
-		User user = new User();
-		user.setUsername(username);
-		user.setPassword(passwordEncoder.encode(password));
-		user.setAccountNonLocked(true);
-		userDetailsManager.createUser(user);
 	}
 
 	@Override

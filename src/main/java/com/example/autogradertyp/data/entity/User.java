@@ -7,6 +7,7 @@ import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,12 +34,19 @@ public class User implements UserDetails {
     @Column(name = "account_non_locked")
     private boolean accountNonLocked;
 
+    private String email;
+
+    private String studentNumber;
+
     public User() {
     }
-    public User(String username, String password, boolean accountNonLocked) {
+    public User(String username, String password, boolean accountNonLocked,
+                String email, String studentNumber) {
         this.username = username;
         this.password = password;
         this.accountNonLocked = accountNonLocked;
+        this.email = email;
+        this.studentNumber = studentNumber;
     }
 
     @Override
@@ -88,5 +96,21 @@ public class User implements UserDetails {
     public boolean getAccountNonLocked() {
 
         return accountNonLocked;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getStudentNumber() {
+        return studentNumber;
+    }
+
+    public void setStudentNumber(String studentNumber) {
+        this.studentNumber = studentNumber;
     }
 }
