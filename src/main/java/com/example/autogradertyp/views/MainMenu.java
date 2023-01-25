@@ -30,6 +30,7 @@ public class MainMenu extends VerticalLayout {
     private void createHeader() {
         Button logout = new Button("Log out", e -> securityService.logout());
         HorizontalLayout header = new HorizontalLayout(logout);
+        add(header);
 
     }
     private void createBody() {

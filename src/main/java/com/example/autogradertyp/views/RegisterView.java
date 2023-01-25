@@ -68,6 +68,7 @@ public class RegisterView extends VerticalLayout {
         user.setPassword(passwordEncoder.encode(password));
         user.setAccountNonLocked(true);
         user.setEmail(email);
+        user.setRole("USER");
         user.setStudentNumber(studentNumber);
         userDetailsManager.createUser(user);
     }

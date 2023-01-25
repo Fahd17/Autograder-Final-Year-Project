@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 
-@PermitAll
+@RolesAllowed({"ROLE_ADMIN"})
 @Route("create-assignment")
 public class CreateAssignmentView extends VerticalLayout {
 

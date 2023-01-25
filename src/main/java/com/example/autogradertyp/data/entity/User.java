@@ -1,5 +1,6 @@
 package com.example.autogradertyp.data.entity;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Data
@@ -17,9 +19,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Table(name = "users")
 public class User implements UserDetails {
 
-    /**
-     *
-     */
+
+    private static final String ROLE_PREFIX = "ROLE_";
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -36,23 +37,29 @@ public class User implements UserDetails {
 
     private String email;
 
+    private String role;
+
     private String studentNumber;
 
     public User() {
     }
     public User(String username, String password, boolean accountNonLocked,
-                String email, String studentNumber) {
+                String email,String role, String studentNumber) {
         this.username = username;
         this.password = password;
         this.accountNonLocked = accountNonLocked;
         this.email = email;
+        this.role = role;
         this.studentNumber = studentNumber;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
 
-        return List.of(() -> "read");
+        list.add(new SimpleGrantedAuthority(ROLE_PREFIX + role));
+
+        return list;
     }
 
     @Override
@@ -104,6 +111,14 @@ public class User implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getStudentNumber() {
