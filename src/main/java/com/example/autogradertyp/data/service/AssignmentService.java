@@ -36,7 +36,7 @@ public class AssignmentService {
         return targetAssignment;
     }
 
-    public Assignment saveAssigment(Assignment assignment) {
+    public Assignment add(Assignment assignment) {
         return repository.save(assignment);
     }
 

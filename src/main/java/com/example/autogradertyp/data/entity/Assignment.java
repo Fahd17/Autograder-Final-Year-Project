@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -21,18 +24,16 @@ public class Assignment {
     private String assignmentID;
     private String courseID;
 
-    @OneToOne
-    @JoinColumn(name = "test_case_id")
-    private TestCase testCase;
+    @OneToMany(mappedBy="assignment")
+    private List<TestCase> testCases;
 
 
 
-    public Assignment (String assignmentName, String assignmentID, String courseID,TestCase testCase){
+    public Assignment (String assignmentName, String assignmentID, String courseID){
 
         this.assignmentName = assignmentName;
         this.assignmentID = assignmentID;
         this.courseID = courseID;
-        this.testCase = testCase;
     }
 
 
@@ -57,10 +58,6 @@ public class Assignment {
         this.courseID = courseID;
     }
 
-    public void setTestCase(TestCase testCase) {
-        this.testCase = testCase;
-    }
-
     public String getAssignmentName() {
         return assignmentName;
     }
@@ -73,9 +70,6 @@ public class Assignment {
         return courseID;
     }
 
-    public TestCase getTestCase() {
-        return testCase;
-    }
 
     @Override
     public String toString() {
@@ -83,8 +77,7 @@ public class Assignment {
                 "id=" + id +
                 ", assignmentName='" + assignmentName + '\'' +
                 ", assignmentID='" + assignmentID + '\'' +
-                ", courseID='" + courseID + '\'' +
-                ", testCase=" + testCase +
+                ", courseID='" + courseID +
                 '}';
     }
 }

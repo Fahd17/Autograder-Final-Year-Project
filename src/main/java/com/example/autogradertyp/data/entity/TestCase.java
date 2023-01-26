@@ -5,10 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
@@ -24,10 +21,27 @@ public class TestCase {
     private String testCaseInput;
     private String expectedOutput;
 
-    public TestCase(String testCaseInput, String expectedOutput) {
+    private int marks;
+
+    @ManyToOne
+    @JoinColumn(name="assignment_id", nullable=false)
+    private Assignment assignment;
+
+
+    public TestCase(String testCaseInput, String expectedOutput, int marks, Assignment assignment) {
 
         this.testCaseInput = testCaseInput;
         this.expectedOutput = expectedOutput;
+        this.assignment = assignment;
+        this.marks = marks;
+    }
+
+    public int getMarks() {
+        return marks;
+    }
+
+    public void setMarks(int marks) {
+        this.marks = marks;
     }
 
     public void setTestCaseInput(String testCaseInput) {
