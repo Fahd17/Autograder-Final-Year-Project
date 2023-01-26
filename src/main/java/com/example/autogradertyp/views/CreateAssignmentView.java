@@ -30,10 +30,6 @@ public class CreateAssignmentView extends VerticalLayout {
         assignmentName.setLabel("Entre assignment name:");
         add(assignmentName);
 
-        TextField assignmentID = new TextField();
-        assignmentID.setLabel("Entre assignment ID:");
-        add(assignmentID);
-
         TextField courseID = new TextField();
         courseID.setLabel("Entre course ID:");
         add(courseID);
@@ -92,7 +88,7 @@ public class CreateAssignmentView extends VerticalLayout {
 
         submit.addClickListener(e -> {
 
-            Assignment assignment = new Assignment(assignmentName.getValue(), assignmentID.getValue(), courseID.getValue());
+            Assignment assignment = new Assignment(assignmentName.getValue(), courseID.getValue());
             assignmentService.add(assignment);
 
             TestCase testCase = new TestCase(testCaseInput.getValue(), testCaseExpectedOutput.getValue(),

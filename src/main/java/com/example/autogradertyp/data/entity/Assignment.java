@@ -21,7 +21,6 @@ public class Assignment {
     private Long id;
 
     private String assignmentName;
-    private String assignmentID;
     private String courseID;
 
     @OneToMany(mappedBy="assignment")
@@ -29,10 +28,9 @@ public class Assignment {
 
 
 
-    public Assignment (String assignmentName, String assignmentID, String courseID){
+    public Assignment (String assignmentName, String courseID){
 
         this.assignmentName = assignmentName;
-        this.assignmentID = assignmentID;
         this.courseID = courseID;
     }
 
@@ -50,10 +48,6 @@ public class Assignment {
         this.assignmentName = assignmentName;
     }
 
-    public void setAssignmentID(String assignmentID) {
-        this.assignmentID = assignmentID;
-    }
-
     public void setCourseID(String courseID) {
         this.courseID = courseID;
     }
@@ -62,22 +56,9 @@ public class Assignment {
         return assignmentName;
     }
 
-    public String getAssignmentID() {
-        return assignmentID;
-    }
 
     public String getCourseID() {
         return courseID;
     }
 
-
-    @Override
-    public String toString() {
-        return "Assignment{" +
-                "id=" + id +
-                ", assignmentName='" + assignmentName + '\'' +
-                ", assignmentID='" + assignmentID + '\'' +
-                ", courseID='" + courseID +
-                '}';
-    }
 }
