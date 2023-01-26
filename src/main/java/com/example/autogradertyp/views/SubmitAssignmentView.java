@@ -80,17 +80,12 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
 
-        List<Assignment> assignments = assignmentService.getAllAssignments();
-
         Optional<String> assignmentID = beforeEnterEvent.getRouteParameters().get("assignment-ID");
 
-        for (int i = 0; i < assignments.size(); i++) {
+        System.out.println(assignmentID.get());
+        this.targetAssignment = assignmentService.getAssigmentById(Long.valueOf(assignmentID.get()));
 
-            if (assignments.get(i).getAssignmentID().equalsIgnoreCase(assignmentID.get())) {
 
-                this.targetAssignment = assignments.get(i);
-            }
-        }
     }
 
     private void gradeSubmission() throws IOException {
@@ -113,13 +108,8 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
 
         }
 
-
         Label resultMessage;
-        if (true){
-             resultMessage = new Label("Well done, your submission is correct."+ marksAcquired +"   "+ totalMarks);
-        }else{
-            resultMessage = new Label( "Your submission is incorrect!"+ marksAcquired);
-        }
+        resultMessage = new Label("You got "+ marksAcquired + " out of " + totalMarks + "marks.");
 
         add(resultMessage);
 

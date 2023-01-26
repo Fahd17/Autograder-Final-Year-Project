@@ -21,14 +21,14 @@ public class AssignmentService {
         return repository.findAll();
     }
 
-    public Assignment getAssigmentById(String assignmentId) {
+    public Assignment getAssigmentById(Long assignmentId) {
 
         List<Assignment> assignments = getAllAssignments();
         Assignment targetAssignment = null;
 
         for (int i = 0; i < assignments.size(); i++) {
 
-            if (assignments.get(i).getAssignmentID().equalsIgnoreCase(assignmentId)) {
+            if (assignments.get(i).getId().equals(assignmentId)) {
 
                 targetAssignment = assignments.get(i);
             }
