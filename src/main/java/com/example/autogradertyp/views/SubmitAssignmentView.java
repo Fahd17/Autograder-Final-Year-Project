@@ -2,6 +2,7 @@ package com.example.autogradertyp.views;
 
 import com.example.autogradertyp.backend.JavaGrader;
 import com.example.autogradertyp.data.entity.Assignment;
+import com.example.autogradertyp.data.entity.TestCase;
 import com.example.autogradertyp.data.service.AssignmentService;
 import com.example.autogradertyp.data.service.TestCaseService;
 import com.vaadin.flow.component.button.Button;
@@ -95,14 +96,29 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
     private void gradeSubmission() throws IOException {
 
         JavaGrader javaGrader = new JavaGrader();
-        boolean result = true;//javaGrader.gradeProgram(submissionFileName, targetAssignment.getTestCase().getTestCaseInput(),
-               // targetAssignment.getTestCase().getExpectedOutput());
+        ArrayList<TestCase> testCases = testCaseService.getTestCasesForAssignment(targetAssignment);
+        int totalMarks = 0;
+        int marksAcquired = 0;
+
+        for(int i = 0; i < testCases.size(); i++){
+
+            totalMarks = totalMarks + testCases.get(i).getMarks();
+
+            boolean result = javaGrader.gradeProgram(submissionFileName, testCases.get(i).getTestCaseInput(),
+                    testCases.get(i).getExpectedOutput());
+
+            if (result){
+                marksAcquired = marksAcquired + testCases.get(i).getMarks();
+            }
+
+        }
+
 
         Label resultMessage;
-        if (result){
-             resultMessage = new Label("Well done, your submission is correct.");
+        if (true){
+             resultMessage = new Label("Well done, your submission is correct."+ marksAcquired +"   "+ totalMarks);
         }else{
-            resultMessage = new Label( "Your submission is incorrect!");
+            resultMessage = new Label( "Your submission is incorrect!"+ marksAcquired);
         }
 
         add(resultMessage);

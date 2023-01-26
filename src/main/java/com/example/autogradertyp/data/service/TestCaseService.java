@@ -1,10 +1,12 @@
 package com.example.autogradertyp.data.service;
 
+import com.example.autogradertyp.data.entity.Assignment;
 import com.example.autogradertyp.data.entity.TestCase;
 import com.example.autogradertyp.data.repository.TestCaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,5 +33,22 @@ public class TestCaseService {
 
     public void delete(TestCase testCase){
         repository.delete(testCase);
+    }
+
+    public ArrayList<TestCase> getTestCasesForAssignment (Assignment assignment){
+
+        ArrayList<TestCase> testCases = new ArrayList<>();
+        List<TestCase> allTestCases;
+        allTestCases = findAll();
+
+        for (int i = 0; i < allTestCases.size(); i++) {
+
+            if(allTestCases.get(i).getAssignment().getId().equals(assignment.getId())){
+                testCases.add(allTestCases.get(i));
+            }
+        }
+
+        return testCases;
+
     }
 }
