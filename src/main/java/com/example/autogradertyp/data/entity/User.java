@@ -41,6 +41,9 @@ public class User implements UserDetails {
 
     private String studentNumber;
 
+    @OneToMany(mappedBy="user")
+    private List<Submission> Submissions;
+
     public User() {
     }
     public User(String username, String password, boolean accountNonLocked,

@@ -26,22 +26,14 @@ public class Assignment {
     @OneToMany(mappedBy="assignment")
     private List<TestCase> testCases;
 
+    @OneToMany(mappedBy="assignment")
+    private List<Submission> Submissions;
 
 
     public Assignment (String assignmentName, String courseID){
 
         this.assignmentName = assignmentName;
         this.courseID = courseID;
-    }
-
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public void setAssignmentName(String assignmentName) {
