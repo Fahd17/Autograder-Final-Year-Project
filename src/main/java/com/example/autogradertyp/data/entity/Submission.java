@@ -24,6 +24,9 @@ public class Submission {
 
     private LocalDateTime submissionDataTime;
 
+    @Lob
+    private byte[] data;
+
     @ManyToOne
     @JoinColumn(name="assignment_id", nullable=false)
     private Assignment assignment;
@@ -31,6 +34,15 @@ public class Submission {
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
     private User user;
+
+    public Submission(int marks, int totalMarks, LocalDateTime submissionDataTime, byte[] data){
+
+        this.marks = marks;
+        this.totalMarks = totalMarks;
+        this.submissionDataTime = submissionDataTime;
+        this.data = data;
+
+    }
     
     public int getMarks() {
         return marks;
@@ -70,5 +82,13 @@ public class Submission {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public byte[] getData() {
+        return data;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
     }
 }
