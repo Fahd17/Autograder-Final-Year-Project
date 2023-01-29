@@ -7,6 +7,8 @@ import com.example.autogradertyp.data.service.AssignmentService;
 import com.example.autogradertyp.data.service.SecurityUserDetailsService;
 import com.example.autogradertyp.data.service.TestCaseService;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -45,6 +47,10 @@ public class CreateAssignmentView extends VerticalLayout {
 
         Label testCaseMessage = new Label("Entre test case information:");
         add(testCaseMessage);
+
+        DateTimePicker deadline = new DateTimePicker ("Assignment deadline:");
+        add(deadline);
+
         VerticalLayout testCaseSection =  new VerticalLayout();
         HorizontalLayout testCaseLayout = new HorizontalLayout();
 
@@ -100,7 +106,7 @@ public class CreateAssignmentView extends VerticalLayout {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User author = userService.loadUserByUsername(authentication.getName());
 
-            Assignment assignment = new Assignment(assignmentName.getValue(), courseID.getValue(), author);
+            Assignment assignment = new Assignment(assignmentName.getValue(), courseID.getValue(), author, deadline.getValue());
             assignmentService.add(assignment);
 
             TestCase testCase = new TestCase(testCaseInput.getValue(), testCaseExpectedOutput.getValue(),

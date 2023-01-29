@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -23,6 +24,8 @@ public class Assignment {
     private String assignmentName;
     private String courseID;
 
+    private LocalDateTime deadline;
+
     @OneToMany(mappedBy="assignment")
     private List<TestCase> testCases;
 
@@ -33,11 +36,12 @@ public class Assignment {
     private User author;
 
 
-    public Assignment (String assignmentName, String courseID, User author){
+    public Assignment (String assignmentName, String courseID, User author, LocalDateTime deadline){
 
         this.assignmentName = assignmentName;
         this.courseID = courseID;
         this.author = author;
+        this.deadline = deadline;
     }
 
     public void setAssignmentName(String assignmentName) {
@@ -63,5 +67,13 @@ public class Assignment {
 
     public void setAuthor(User author) {
         this.author = author;
+    }
+
+    public LocalDateTime getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(LocalDateTime deadline) {
+        this.deadline = deadline;
     }
 }
