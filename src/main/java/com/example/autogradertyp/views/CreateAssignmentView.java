@@ -2,7 +2,9 @@ package com.example.autogradertyp.views;
 
 import com.example.autogradertyp.data.entity.Assignment;
 import com.example.autogradertyp.data.entity.TestCase;
+import com.example.autogradertyp.data.entity.User;
 import com.example.autogradertyp.data.service.AssignmentService;
+import com.example.autogradertyp.data.service.SecurityUserDetailsService;
 import com.example.autogradertyp.data.service.TestCaseService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Label;
@@ -11,9 +13,12 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.annotation.security.RolesAllowed;
 import java.util.ArrayList;
+import java.util.Map;
 
 @RolesAllowed({"ROLE_ADMIN"})
 @Route("create-assignment")
@@ -24,6 +29,10 @@ public class CreateAssignmentView extends VerticalLayout {
 
     @Autowired
     private TestCaseService testCaseService;
+
+    @Autowired
+    private SecurityUserDetailsService userService;
+
     public CreateAssignmentView() {
 
         TextField assignmentName = new TextField();
@@ -88,7 +97,10 @@ public class CreateAssignmentView extends VerticalLayout {
 
         submit.addClickListener(e -> {
 
-            Assignment assignment = new Assignment(assignmentName.getValue(), courseID.getValue());
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User author = userService.loadUserByUsername(authentication.getName());
+
+            Assignment assignment = new Assignment(assignmentName.getValue(), courseID.getValue(), author);
             assignmentService.add(assignment);
 
             TestCase testCase = new TestCase(testCaseInput.getValue(), testCaseExpectedOutput.getValue(),

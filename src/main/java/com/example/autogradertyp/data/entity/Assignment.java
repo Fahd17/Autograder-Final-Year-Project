@@ -28,12 +28,16 @@ public class Assignment {
 
     @OneToMany(mappedBy="assignment")
     private List<Submission> Submissions;
+    @ManyToOne
+    @JoinColumn(name="author_id", nullable=false)
+    private User author;
 
 
-    public Assignment (String assignmentName, String courseID){
+    public Assignment (String assignmentName, String courseID, User author){
 
         this.assignmentName = assignmentName;
         this.courseID = courseID;
+        this.author = author;
     }
 
     public void setAssignmentName(String assignmentName) {
@@ -53,4 +57,11 @@ public class Assignment {
         return courseID;
     }
 
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
 }

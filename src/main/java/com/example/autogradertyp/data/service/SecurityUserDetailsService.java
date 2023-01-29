@@ -16,12 +16,13 @@ public class SecurityUserDetailsService implements UserDetailsService {
     private UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username)
+    public User loadUserByUsername(String username)
             throws UsernameNotFoundException {
         User user = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not present"));
         return user;
     }
+
     public void createUser(UserDetails user) {
 
         userRepository.save((User) user);

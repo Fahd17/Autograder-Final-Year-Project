@@ -27,6 +27,7 @@ public class User implements UserDetails {
     @GeneratedValue
     private Long id;
 
+    
     private String username;
 
     @Column(name="password",columnDefinition="LONGTEXT")
@@ -43,6 +44,9 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy="user")
     private List<Submission> Submissions;
+
+    @OneToMany(mappedBy="author")
+    private List<Assignment> assignments;
 
     public User() {
     }
