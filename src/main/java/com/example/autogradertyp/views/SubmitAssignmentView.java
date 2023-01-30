@@ -2,8 +2,12 @@ package com.example.autogradertyp.views;
 
 import com.example.autogradertyp.backend.JavaGrader;
 import com.example.autogradertyp.data.entity.Assignment;
+import com.example.autogradertyp.data.entity.Submission;
 import com.example.autogradertyp.data.entity.TestCase;
+import com.example.autogradertyp.data.entity.User;
 import com.example.autogradertyp.data.service.AssignmentService;
+import com.example.autogradertyp.data.service.SecurityUserDetailsService;
+import com.example.autogradertyp.data.service.SubmissionService;
 import com.example.autogradertyp.data.service.TestCaseService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
@@ -15,12 +19,16 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,8 +42,15 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
 
     @Autowired
     private TestCaseService testCaseService;
-    Assignment targetAssignment;
-    String submissionFileName;
+    @Autowired
+    private SubmissionService submissionService;
+
+    @Autowired
+    private SecurityUserDetailsService userService;
+    private Assignment targetAssignment;
+    private String submissionFileName;
+
+    private byte[] submissionBytes;
 
     public SubmitAssignmentView() {
 
@@ -45,7 +60,7 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
 
         Upload upload = new Upload(memoryBuffer);
         upload.addFinishedListener(e -> {
-            SaveUploadedFile(memoryBuffer, e.getFileName());
+            submissionBytes = SaveUploadedFile(memoryBuffer, e.getFileName());
             this.submissionFileName = e.getFileName().replace(".java", "");
 
         });
@@ -82,7 +97,6 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
 
         Optional<String> assignmentID = beforeEnterEvent.getRouteParameters().get("assignment-ID");
 
-        System.out.println(assignmentID.get());
         this.targetAssignment = assignmentService.getAssigmentById(Long.valueOf(assignmentID.get()));
 
 
@@ -108,28 +122,42 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
 
         }
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.loadUserByUsername(authentication.getName());
+
+        Submission submission = new Submission(marksAcquired, totalMarks, LocalDateTime.now(), submissionBytes, targetAssignment, user);
+        submissionService.add(submission);
+
         Label resultMessage;
-        resultMessage = new Label("You got "+ marksAcquired + " out of " + totalMarks + "marks.");
+        resultMessage = new Label("You got "+ marksAcquired + " out of " + totalMarks +  "marks.");
 
         add(resultMessage);
 
     }
 
-    private void SaveUploadedFile(MemoryBuffer memoryBuffer, String name) {
+    private byte[] SaveUploadedFile(MemoryBuffer memoryBuffer, String name) {
+
         InputStream inputStream = memoryBuffer.getInputStream();
+        ByteArrayOutputStream ous = null;
 
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(".\\submissions_directory\\"+ name);
             byte dataBuffer[] = new byte[1024];
             int bytesRead;
+            ous = new ByteArrayOutputStream();
+
             while ((bytesRead = inputStream.read(dataBuffer, 0, 1024)) != -1) {
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
+                ous.write(dataBuffer, 0, bytesRead);
             }
             fileOutputStream.close();
+            ous.close();
 
         } catch (IOException IO) {
             System.out.print("Invalid Path");
 
         }
+
+        return ous.toByteArray();
     }
 }

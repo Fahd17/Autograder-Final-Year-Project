@@ -35,12 +35,14 @@ public class Submission {
     @JoinColumn(name="user_id", nullable=false)
     private User user;
 
-    public Submission(int marks, int totalMarks, LocalDateTime submissionDataTime, byte[] data){
+    public Submission(int marks, int totalMarks, LocalDateTime submissionDataTime, byte[] data, Assignment assignment, User user){
 
         this.marks = marks;
         this.totalMarks = totalMarks;
         this.submissionDataTime = submissionDataTime;
         this.data = data;
+        this.assignment = assignment;
+        this.user = user;
 
     }
     
