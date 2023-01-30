@@ -125,7 +125,8 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.loadUserByUsername(authentication.getName());
 
-        Submission submission = new Submission(marksAcquired, totalMarks, LocalDateTime.now(), submissionBytes, targetAssignment, user);
+        Submission submission = new Submission(marksAcquired, totalMarks, LocalDateTime.now(), submissionBytes,
+                submissionService.nextAttemptNumber(targetAssignment, user), targetAssignment, user);
         submissionService.add(submission);
 
         Label resultMessage;

@@ -27,6 +27,8 @@ public class Submission {
     @Lob
     private byte[] data;
 
+    private int attemptNumber;
+
     @ManyToOne
     @JoinColumn(name="assignment_id", nullable=false)
     private Assignment assignment;
@@ -35,7 +37,8 @@ public class Submission {
     @JoinColumn(name="user_id", nullable=false)
     private User user;
 
-    public Submission(int marks, int totalMarks, LocalDateTime submissionDataTime, byte[] data, Assignment assignment, User user){
+    public Submission(int marks, int totalMarks, LocalDateTime submissionDataTime, byte[] data,
+                      int attemptNumber, Assignment assignment, User user){
 
         this.marks = marks;
         this.totalMarks = totalMarks;
@@ -43,6 +46,7 @@ public class Submission {
         this.data = data;
         this.assignment = assignment;
         this.user = user;
+        this.attemptNumber = attemptNumber;
 
     }
     

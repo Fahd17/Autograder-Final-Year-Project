@@ -47,4 +47,9 @@ public class SubmissionService {
         return submissions;
 
     }
+
+    public int nextAttemptNumber (Assignment assignment, User user){
+
+        return getStudentSubmissionsForAssignment(assignment, user).size()+1;
+    }
 }
