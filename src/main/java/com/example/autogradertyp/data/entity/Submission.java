@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Data
 @NoArgsConstructor
@@ -67,7 +68,14 @@ public class Submission {
     }
 
     public LocalDateTime getSubmissionDataTime() {
+
         return submissionDataTime;
+    }
+
+    public String getSubmissionDataTimeFormatted () {
+
+        DateTimeFormatter formatSubmissionTime = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        return getSubmissionDataTime().format(formatSubmissionTime);
     }
 
     public void setSubmissionDataTime(LocalDateTime submissionDataTime) {

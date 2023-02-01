@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RolesAllowed({"ROLE_ADMIN"})
-@Route("assignment-menu")
+@Route("assignments")
 public class AssignmentMenu extends VerticalLayout {
 
     public AssignmentMenu(AssignmentService assignmentService) {
@@ -47,7 +47,7 @@ public class AssignmentMenu extends VerticalLayout {
                         assignmentChoice.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
                         assignmentChoice.addClickListener(e ->
 
-                                assignmentChoice.getUI().ifPresent(ui -> ui.navigate(SubmitAssignmentView.class,
+                                assignmentChoice.getUI().ifPresent(ui -> ui.navigate(AssignmentView.class,
                                         new RouteParameters("assignment-ID", String.valueOf(assignment.getId())))));
 
                         assignmentChoice.setHeight(30, Unit.MM);
@@ -56,6 +56,8 @@ public class AssignmentMenu extends VerticalLayout {
 
                     }
                     add(assignmentsOptions);
+
+
                 }
 
             }
