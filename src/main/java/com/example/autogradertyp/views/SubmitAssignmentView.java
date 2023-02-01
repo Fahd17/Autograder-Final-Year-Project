@@ -11,26 +11,24 @@ import com.example.autogradertyp.data.service.SubmissionService;
 import com.example.autogradertyp.data.service.TestCaseService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteParameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @PermitAll
@@ -54,6 +52,14 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
 
     public SubmitAssignmentView() {
 
+        fileUploader();
+        submitButton();
+        goBackButton();
+
+    }
+
+    private void fileUploader() {
+
         add(new H1("Upload submission:"));
 
         MemoryBuffer memoryBuffer = new MemoryBuffer();
@@ -66,18 +72,25 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
         });
 
         add(upload);
+    }
+
+    private void submitButton() {
 
         Button submitButton = new Button("Submit");
         add(submitButton);
         submitButton.addClickListener(e -> {
             try {
                 gradeSubmission();
+                submitButton.getUI().ifPresent(ui -> ui.navigate(AssignmentView.class,
+                        new RouteParameters("assignment-ID", String.valueOf(targetAssignment.getId()))));
 
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         });
+    }
 
+    private void goBackButton() {
         VerticalLayout bottomRow = new VerticalLayout();
 
         bottomRow.setAlignItems(Alignment.END);
@@ -88,8 +101,8 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
 
         goBackButton.addClickListener(e ->
 
-                goBackButton.getUI().ifPresent(ui -> ui.navigate(MainMenu.class)));
-
+                goBackButton.getUI().ifPresent(ui -> ui.navigate(AssignmentView.class,
+                        new RouteParameters("assignment-ID", String.valueOf(targetAssignment.getId())))));
     }
 
     @Override
@@ -109,14 +122,14 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
         int totalMarks = 0;
         int marksAcquired = 0;
 
-        for(int i = 0; i < testCases.size(); i++){
+        for (int i = 0; i < testCases.size(); i++) {
 
             totalMarks = totalMarks + testCases.get(i).getMarks();
 
             boolean result = javaGrader.gradeProgram(submissionFileName, testCases.get(i).getTestCaseInput(),
                     testCases.get(i).getExpectedOutput());
 
-            if (result){
+            if (result) {
                 marksAcquired = marksAcquired + testCases.get(i).getMarks();
             }
 
@@ -129,11 +142,6 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
                 submissionService.nextAttemptNumber(targetAssignment, user), targetAssignment, user);
         submissionService.add(submission);
 
-        Label resultMessage;
-        resultMessage = new Label("You got "+ marksAcquired + " out of " + totalMarks +  "marks.");
-
-        add(resultMessage);
-
     }
 
     private byte[] SaveUploadedFile(MemoryBuffer memoryBuffer, String name) {
@@ -142,8 +150,8 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
         ByteArrayOutputStream ous = null;
 
         try {
-            FileOutputStream fileOutputStream = new FileOutputStream(".\\submissions_directory\\"+ name);
-            byte dataBuffer[] = new byte[1024];
+            FileOutputStream fileOutputStream = new FileOutputStream(".\\submissions_directory\\" + name);
+            byte[] dataBuffer = new byte[1024];
             int bytesRead;
             ous = new ByteArrayOutputStream();
 
