@@ -73,14 +73,8 @@ public class AssignmentView extends VerticalLayout implements BeforeEnterObserve
 
         if (submissions.size() != 0) {
 
-            Submission keptSubmission = submissions.get(0);
-            for (int i = 0; i < submissions.size(); i++) {
+            Submission keptSubmission = submissionService.getUserCurrentSubmission(submissions);
 
-                if (submissions.get(i).getMarks() > keptSubmission.getMarks()) {
-                    keptSubmission = submissions.get(i);
-                }
-
-            }
             add(new H1(keptSubmission.getMarks() + " out of " + keptSubmission.getTotalMarks()
                     + " submitted at " + keptSubmission.getSubmissionDataTimeFormatted()));
         } else {
