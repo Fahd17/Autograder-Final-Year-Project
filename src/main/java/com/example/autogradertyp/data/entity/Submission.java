@@ -31,15 +31,14 @@ public class Submission {
     private int attemptNumber;
 
     @ManyToOne
-    @JoinColumn(name="assignment_id", nullable=false)
+    @JoinColumn(name = "assignment_id", nullable = false)
     private Assignment assignment;
 
     @ManyToOne
-    @JoinColumn(name="user_id", nullable=false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public Submission(int marks, int totalMarks, LocalDateTime submissionDataTime, byte[] data,
-                      int attemptNumber, Assignment assignment, User user){
+    public Submission(int marks, int totalMarks, LocalDateTime submissionDataTime, byte[] data, int attemptNumber, Assignment assignment, User user) {
 
         this.marks = marks;
         this.totalMarks = totalMarks;
@@ -50,7 +49,7 @@ public class Submission {
         this.attemptNumber = attemptNumber;
 
     }
-    
+
     public int getMarks() {
         return marks;
     }
@@ -72,14 +71,14 @@ public class Submission {
         return submissionDataTime;
     }
 
-    public String getSubmissionDataTimeFormatted () {
+    public void setSubmissionDataTime(LocalDateTime submissionDataTime) {
+        this.submissionDataTime = submissionDataTime;
+    }
+
+    public String getSubmissionDataTimeFormatted() {
 
         DateTimeFormatter formatSubmissionTime = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         return getSubmissionDataTime().format(formatSubmissionTime);
-    }
-
-    public void setSubmissionDataTime(LocalDateTime submissionDataTime) {
-        this.submissionDataTime = submissionDataTime;
     }
 
     public Assignment getAssignment() {
@@ -104,5 +103,12 @@ public class Submission {
 
     public void setData(byte[] data) {
         this.data = data;
+    }
+
+    public String[] ToStringCSV() {
+
+        String[] record = {user.getStudentNumber(), getMarks() + "", totalMarks + "", user.getEmail()};
+
+        return record;
     }
 }
