@@ -48,6 +48,45 @@ public class SubmissionService {
 
     }
 
+    public Submission getUserCurrentSubmission (ArrayList<Submission> submissions) {
+
+        Submission keptSubmission = submissions.get(0);
+        for (int i = 0; i < submissions.size(); i++) {
+
+            if (submissions.get(i).getMarks() > keptSubmission.getMarks()) {
+                keptSubmission = submissions.get(i);
+            }
+
+        }
+        return keptSubmission;
+    }
+
+    public ArrayList<Submission> getFinalSubmissions(Assignment assignment){
+
+        ArrayList<User> users = new ArrayList<>();
+        List<Submission> allSubmissions = getAllSubmissions();
+        ArrayList<Submission> finalSubmissions = new ArrayList<>();
+
+        for (int i = 0; i < allSubmissions.size(); i++){
+
+            User user = allSubmissions.get(i).getUser();
+
+            if (!users.contains(user)){
+                users.add(user);
+
+            }
+        }
+        System.out.println(users.size());
+
+        for (int i = 0; i < users.size(); i++){
+
+            finalSubmissions.add(getUserCurrentSubmission(
+                    getStudentSubmissionsForAssignment(assignment, users.get(i))));
+        }
+        return finalSubmissions;
+
+    }
+
     public int nextAttemptNumber (Assignment assignment, User user){
 
         return getStudentSubmissionsForAssignment(assignment, user).size()+1;
