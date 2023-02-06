@@ -31,6 +31,14 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 
+/**
+ * A class that builds a UI for main menu
+ *
+ * @author Fahd Alsahali
+ * @date 14/11/2022
+ * @version 2.0
+ * @since 01/02/2023
+ */
 @PermitAll
 @Route("submit-assignment/:assignment-ID?")
 public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterObserver {
@@ -50,6 +58,10 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
 
     private byte[] submissionBytes;
 
+    /**
+     * Creates the UI components
+     *
+     */
     public SubmitAssignmentView() {
 
         fileUploader();
@@ -105,6 +117,10 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
                         new RouteParameters("assignment-ID", String.valueOf(targetAssignment.getId())))));
     }
 
+
+    /**
+     * Gets the URL parameter which is the assignment id
+     */
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
 

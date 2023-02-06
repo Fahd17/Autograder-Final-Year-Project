@@ -20,12 +20,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collections;
 
+/**
+ * A class that builds a UI for creating a new assignment
+ *
+ * @author Fahd Alsahali
+ * @date 25/01/2023
+ * @version 1.0
+ */
+
 @Route("login") 
 @PageTitle("Login")
 @AnonymousAllowed
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
 	private final LoginForm login = new LoginForm();
+
+	/**
+	 * Creates the login view for the user
+	 *
+	 */
 	public LoginView(){
 
 		addClassName("login-view");

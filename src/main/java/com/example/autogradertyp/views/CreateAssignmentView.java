@@ -26,6 +26,15 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * A class that builds a UI for creating a new assignment
+ *
+ * @author Fahd Alsahali
+ * @date 13/11/2022
+ * @version 2.0
+ * @since 01/02/2023
+ */
+
 @RolesAllowed({"ROLE_ADMIN"})
 @Route("create-assignment")
 public class CreateAssignmentView extends VerticalLayout {
@@ -42,6 +51,10 @@ public class CreateAssignmentView extends VerticalLayout {
     @Autowired
     private SubmissionService submissionService;
 
+    /**
+     * Creates a create new assigment view
+     *
+     */
     public CreateAssignmentView() {
 
         TextField assignmentName = new TextField();
@@ -143,6 +156,11 @@ public class CreateAssignmentView extends VerticalLayout {
                 goBackButton.getUI().ifPresent(ui -> ui.navigate(MainMenu.class)));
     }
 
+    /**
+     * A method that starts a timer to the deadline of the assignment
+     *
+     * @param assignment The assignment which the timer for its deadline will start
+     */
     private void startCountDown (Assignment assignment) {
 
         Long remainingTime = LocalDateTime.now().until(assignment.getDeadline(), ChronoUnit.SECONDS);

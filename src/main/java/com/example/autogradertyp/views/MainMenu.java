@@ -15,12 +15,25 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.annotation.security.PermitAll;
 
+/**
+ * A class that builds a UI for main menu
+ *
+ * @author Fahd Alsahali
+ * @date 13/11/2022
+ * @version 1.0
+ */
+
 @PermitAll
 @Route("main-menu")
 public class MainMenu extends VerticalLayout {
 
     private final SecurityService securityService;
 
+    /**
+     * Creates the UI of the page
+     *
+     * @param securityService To access teh user table in the database
+     */
     public MainMenu(SecurityService securityService) {
         this.securityService = securityService;
         createHeader();
@@ -30,10 +43,12 @@ public class MainMenu extends VerticalLayout {
     private void createHeader() {
         Button logout = new Button("Log out", e -> securityService.logout());
         HorizontalLayout header = new HorizontalLayout(logout);
+        header.setAlignItems(Alignment.END);
         add(header);
 
     }
     private void createBody() {
+        VerticalLayout bodyLayout = new VerticalLayout();
         HorizontalLayout bannerLayout = new HorizontalLayout();
         H1 banner = new H1("Welcome to auto grade");
         bannerLayout.add(banner);
@@ -41,7 +56,7 @@ public class MainMenu extends VerticalLayout {
         Label chooseMessage = new Label("Please select from the following options:");
 
         HorizontalLayout optionsLayout = new HorizontalLayout();
-        setAlignItems(FlexComponent.Alignment.CENTER);
+        bodyLayout.setAlignItems(FlexComponent.Alignment.CENTER);
 
 
         Button createAssignmentButton = new Button("Create an assignment");
@@ -63,7 +78,8 @@ public class MainMenu extends VerticalLayout {
         submitAssignmentButton.setWidth(70, Unit.MM);
         optionsLayout.add(submitAssignmentButton);
 
-        add(bannerLayout, chooseMessage, optionsLayout);
+        bodyLayout.add(bannerLayout, chooseMessage, optionsLayout);
+        add(bodyLayout);
 
     }
 

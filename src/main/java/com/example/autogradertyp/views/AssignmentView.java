@@ -25,6 +25,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
 
+/**
+ * A class that builds a UI an assignment where all the user past attempts are shown
+ * along with the option to new submission
+ *
+ * @author Fahd Alsahali
+ * @date 01/02/2023
+ * @version 1.0
+ */
+
 @PermitAll
 @Route("assignment/:assignment-ID?")
 public class AssignmentView extends VerticalLayout implements BeforeEnterObserver {
@@ -41,6 +50,10 @@ public class AssignmentView extends VerticalLayout implements BeforeEnterObserve
     private SecurityUserDetailsService userService;
 
 
+    /**
+     * Creates a new assigment view and adds the option to go back and to new submission
+     *
+     */
     public AssignmentView() {
 
         newSubmission();
@@ -67,6 +80,11 @@ public class AssignmentView extends VerticalLayout implements BeforeEnterObserve
         showPastAttempts(submissions);
     }
 
+    /**
+     * A method that finds which submission is approved as final submission and display it to the user
+     *
+     * @param submissions The submission of the user at the targeted assignment
+     */
     private void currentGrade(ArrayList<Submission> submissions) {
 
         add(new H1("Current mark:"));
@@ -83,6 +101,10 @@ public class AssignmentView extends VerticalLayout implements BeforeEnterObserve
         }
     }
 
+    /**
+     * A method that display an option to navigate to the new submission page
+     *
+     */
     private void newSubmission() {
         Button newSubmission = new Button("New submission:");
         newSubmission.setWidthFull();
@@ -95,6 +117,10 @@ public class AssignmentView extends VerticalLayout implements BeforeEnterObserve
         add(newSubmission);
     }
 
+    /**
+     * A method that display an option to go back to the assignment option
+     *
+     */
     private void goBackButton () {
 
         VerticalLayout bottomRow = new VerticalLayout();
@@ -110,6 +136,11 @@ public class AssignmentView extends VerticalLayout implements BeforeEnterObserve
                 goBackButton.getUI().ifPresent(ui -> ui.navigate(AssignmentMenu.class)));
     }
 
+    /**
+     * A method that shows all the past attempts of the user at a specific assignment
+     *
+     * @param submissions The submission of the user at the assignment
+     */
     private void showPastAttempts(ArrayList<Submission> submissions) {
 
         add(new H1("Past attempts:"));

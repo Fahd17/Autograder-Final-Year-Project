@@ -12,6 +12,15 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+
+/**
+ * A class that builds a UI for the choose assignment view
+ *
+ * @author Fahd Alsahali
+ * @date 25/01/2023
+ * @version 1.0
+ */
+
 @Route("register")
 @PageTitle("New user")
 @AnonymousAllowed
@@ -23,7 +32,11 @@ public class RegisterView extends VerticalLayout {
     private PasswordEncoder passwordEncoder;
 
 
-    public RegisterView(SecurityUserDetailsService userDetailsManager, PasswordEncoder passwordEncoder){
+    /**
+     * Creates register new user view
+     *
+     */
+    public RegisterView(){
 
         addClassName("register-view");
         setSizeFull();
@@ -62,6 +75,14 @@ public class RegisterView extends VerticalLayout {
 
     }
 
+    /**
+     * A method that adds new user to the database
+     *
+     * @param username The username of the user
+     * @param password Unencrypted password of the user
+     * @param email Email of the user
+     * @param studentNumber The university of the user
+     */
     public void addUser(String username, String password, String email, String studentNumber) {
         User user = new User();
         user.setUsername(username);
@@ -70,6 +91,6 @@ public class RegisterView extends VerticalLayout {
         user.setEmail(email);
         user.setRole("USER");
         user.setStudentNumber(studentNumber);
-        userDetailsManager.createUser(user);
+        userDetailsManager.add(user);
     }
 }

@@ -22,10 +22,23 @@ import javax.annotation.security.RolesAllowed;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class that builds a UI for the choose assignment view
+ *
+ * @author Fahd Alsahali
+ * @date 14/11/2022
+ * @version 1.0
+ */
+
 @RolesAllowed({"ROLE_ADMIN"})
 @Route("assignments")
 public class AssignmentMenu extends VerticalLayout {
 
+
+    /**
+     *Creates a view to the user with all the assignments and give a choice to
+     * navigate to a specific assigment
+     */
     public AssignmentMenu(AssignmentService assignmentService) {
 
             List<Assignment> assignments = assignmentService.getAllAssignments();
