@@ -11,17 +11,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
 
+/**
+ * This class is a schedule which runs on every assignment deadline and
+ * generate a CSV file of the assigment results.
+ *
+ * @author Fahd Alsahali
+ * @date 02/02/2023
+ * @version 1.0
+ *
+ */
+
 public class DeadlineScheduler extends TimerTask {
 
     private final Assignment assignment;
-    SubmissionService submissionService;
+    private SubmissionService submissionService;
 
+    /**
+     * Creates a new deadline schedule instance for an assignment.
+     *
+     * @param assignment The targeted assignment
+     * @param submissionService To modify the submission table in the database
+     */
     public DeadlineScheduler(Assignment assignment, SubmissionService submissionService) {
 
         this.assignment = assignment;
         this.submissionService = submissionService;
     }
 
+    /**
+     * A method which is run when it is the deadline of the assignment
+     */
     @Override
     public void run() {
 
@@ -32,6 +51,11 @@ public class DeadlineScheduler extends TimerTask {
         }
     }
 
+    /**
+     * This method gets the final submissions of the target assigment and create a CSV file of the results
+     *
+     * @throws IOException
+     */
     public void createResultsCSV() throws IOException {
 
         List<Submission> submissions = submissionService.getFinalSubmissions(assignment);

@@ -2,16 +2,24 @@ package com.example.autogradertyp.backend;
 
 import java.io.*;
 
+/**
+ * This class runs a java program and grade it according to a test case.
+ *
+ * @author Fahd Alsahali
+ * @date 06/11/2022
+ * @version 2.0
+ * @since 14/11/2022
+ */
+
 public class JavaGrader {
 
-    String programsdirectory = "Users\\fahds\\IdeaProjects\\autograder-TYP\\submissions_directory";
-    Process pro = null;
-    String programOutput;
-    String fileName;
-    String testCaseInput;
-    String testCaseOutput;
-    Boolean result;
-    String absolutePath = System.getProperty("user.dir");
+    private Process pro = null;
+    private String programOutput;
+    private String fileName;
+    private String testCaseInput;
+    private String testCaseOutput;
+    private Boolean result;
+    private String absolutePath = System.getProperty("user.dir");
 
     /**
      * A method to grade a java program
@@ -22,8 +30,7 @@ public class JavaGrader {
      * @return A boolean to indicate if the programs passed the test case.
      * @throws IOException
      */
-    public boolean gradeProgram(String mainFileName, String testCaseInput, String testCaseOutput)
-            throws IOException {
+    public boolean gradeProgram(String mainFileName, String testCaseInput, String testCaseOutput) {
         this.fileName = mainFileName;
         this.testCaseInput = testCaseInput;
         this.testCaseOutput = testCaseOutput;

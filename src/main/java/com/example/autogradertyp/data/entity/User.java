@@ -14,7 +14,18 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+/**
+ * This class represent the user table in the database.
+ *
+ * @author Fahd Alsahali
+ * @date 25/01/2023
+ * @version 1.0
+ *
+ */
+
+
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
@@ -48,8 +59,16 @@ public class User implements UserDetails {
     @OneToMany(mappedBy="author")
     private List<Assignment> assignments;
 
-    public User() {
-    }
+    /**
+     * A method to register a new user
+     *
+     * @param username The username of the user
+     * @param password The encrypted password of the user
+     * @param accountNonLocked To indicates if the account is locked
+     * @param email The email of the user
+     * @param role The role of the user
+     * @param studentNumber The university id of the user
+     */
     public User(String username, String password, boolean accountNonLocked,
                 String email,String role, String studentNumber) {
         this.username = username;
@@ -69,19 +88,42 @@ public class User implements UserDetails {
         return list;
     }
 
+    /**
+     * A method that gets the user encrypted password
+     *
+     * @return The encrypted password of the user
+     */
     @Override
     public String getPassword() {
 
         return password;
     }
+
+    /**
+     * A method that sets the password of the user
+     *
+     * @param password The password
+     */
     public void setPassword(String password) {
         this.password = password;
     }
+
+    /**
+     * A method to get the username od the user
+     *
+     * @return The username of the user
+     */
     @Override
     public String getUsername() {
 
         return username;
     }
+
+    /**
+     * A method that sets the username of the user
+     *
+     * @param username The username of the user
+     */
     public void setUsername(String username) {
         this.username = username;
     }
@@ -94,7 +136,8 @@ public class User implements UserDetails {
 
         return accountNonLocked;
     }
-    @Override public boolean isCredentialsNonExpired() {
+    @Override
+    public boolean isCredentialsNonExpired() {
 
         return true;
     }
@@ -107,31 +150,57 @@ public class User implements UserDetails {
 
         this.accountNonLocked = accountNonLocked;
     }
-    public boolean getAccountNonLocked() {
 
-        return accountNonLocked;
-    }
-
+    /**
+     * A method that gets the email of the user
+     *
+     * @return The email of the user
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * A method that sets the email of the user
+     *
+     * @param email The email of the user
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * A method that gets the role of the user
+     *
+     * @return The role of the user
+     */
     public String getRole() {
         return role;
     }
 
+    /**
+     * A method that sets the role of the user
+     *
+     * @param role The role of the user
+     */
     public void setRole(String role) {
         this.role = role;
     }
 
+    /**
+     * A method that gets the university id
+     *
+     * @return The university id of the user
+     */
     public String getStudentNumber() {
         return studentNumber;
     }
 
+    /**
+     * A method that sets the university id of the user
+     *
+     * @param studentNumber The university id of the user
+     */
     public void setStudentNumber(String studentNumber) {
         this.studentNumber = studentNumber;
     }
