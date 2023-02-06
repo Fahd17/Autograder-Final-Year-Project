@@ -9,6 +9,13 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A service class that provide CRUD of the testcase table in the database
+ *
+ * @author Fahd Alsahali
+ * @date 10/12/2022
+ * @version 1.0
+ */
 @Service
 public class TestCaseService {
 
@@ -19,28 +26,56 @@ public class TestCaseService {
         this.repository = repository;
     }
 
-    public List<TestCase> findAll(){
+    /**
+     * A method that gets all the test cases in the test case table
+     *
+     * @return All the test cases
+     */
+    public List<TestCase> getAllTestCases(){
         return repository.findAll();
     }
 
-    public TestCase add(TestCase testCase){
-        return repository.save(testCase);
+    /**
+     * A method that adds a test case to the database
+     *
+     * @param testCase The test case to be added
+     */
+    public void add(TestCase testCase){
+
+        repository.save(testCase);
     }
 
-    public TestCase update(TestCase testCase){
-        return repository.save(testCase);
+    /**
+     * A method that updates a testcase
+     *
+     * @param testCase The test case to be updated
+     */
+    public void update(TestCase testCase){
+        repository.save(testCase);
     }
 
+    /**
+     * A method that deletes a test case
+     *
+     * @param testCase The test case to be deleted
+     */
     public void delete(TestCase testCase){
         repository.delete(testCase);
     }
 
+    /**
+     * A method that gets the test case of a specific assigment
+     *
+     * @param assignment The target assigment
+     * @return The test cases of the specified assignment
+     */
     public ArrayList<TestCase> getTestCasesForAssignment (Assignment assignment){
 
         ArrayList<TestCase> testCases = new ArrayList<>();
         List<TestCase> allTestCases;
-        allTestCases = findAll();
+        allTestCases = getAllTestCases();
 
+        // going over all the test case and checking related to the targeted assignment
         for (int i = 0; i < allTestCases.size(); i++) {
 
             if(allTestCases.get(i).getAssignment().getId().equals(assignment.getId())){

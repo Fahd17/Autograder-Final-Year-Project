@@ -7,6 +7,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * A service class that provide CRUD of the assigment table in the database
+ *
+ * @author Fahd Alsahali
+ * @date 10/12/2022
+ * @version 1.0
+ */
+
 @Service
 public class AssignmentService {
 
@@ -17,15 +25,27 @@ public class AssignmentService {
         this.repository = repository;
     }
 
+    /**
+     * A method that gets all assignment in the database
+     *
+     * @return All the assignment in the database
+     */
     public List<Assignment> getAllAssignments() {
         return repository.findAll();
     }
 
+    /**
+     * A method that gets an assignment with a specified id
+     *
+     * @param assignmentId The id of the wanted assignment
+     * @return The wanted assignment
+     */
     public Assignment getAssigmentById(Long assignmentId) {
 
         List<Assignment> assignments = getAllAssignments();
         Assignment targetAssignment = null;
 
+        // going over all the assignments and checking if the ids match
         for (int i = 0; i < assignments.size(); i++) {
 
             if (assignments.get(i).getId().equals(assignmentId)) {
@@ -36,14 +56,31 @@ public class AssignmentService {
         return targetAssignment;
     }
 
-    public Assignment add(Assignment assignment) {
-        return repository.save(assignment);
+    /**
+     * Adds an assignment to the assignment table
+     *
+     * @param assignment The assignment to be added
+     */
+    public void add(Assignment assignment) {
+
+        repository.save(assignment);
     }
 
-    public Assignment updateAssignment(Assignment assignment) {
-        return repository.save(assignment);
+    /**
+     * A method to update an assignment
+     *
+     * @param assignment The assignment to be updated
+     */
+    public void updateAssignment(Assignment assignment) {
+
+        repository.save(assignment);
     }
 
+    /**
+     * A method that deletes an assignment
+     *
+     * @param assignment The assignment to be deleted
+     */
     public void deleteAssigment(Assignment assignment) {
         repository.delete(assignment);
     }
