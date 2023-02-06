@@ -1,7 +1,6 @@
 package com.example.autogradertyp.data.entity;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,8 +10,8 @@ import javax.persistence.*;
  * This class represent the test case table in the database.
  *
  * @author Fahd Alsahali
- * @date 10/12/2022
  * @version 1.0
+ * @date 10/12/2022
  */
 
 @Data
@@ -31,17 +30,17 @@ public class TestCase {
     private int marks;
 
     @ManyToOne
-    @JoinColumn(name="assignment_id", nullable=false)
+    @JoinColumn(name = "assignment_id", nullable = false)
     private Assignment assignment;
 
 
     /**
      * Creates a new test case of an assigment
      *
-     * @param testCaseInput The test case input.
+     * @param testCaseInput  The test case input.
      * @param expectedOutput The test case expected output
-     * @param marks The marks assigned to the test case
-     * @param assignment The assignment the test case is related to
+     * @param marks          The marks assigned to the test case
+     * @param assignment     The assignment the test case is related to
      */
     public TestCase(String testCaseInput, String expectedOutput, int marks, Assignment assignment) {
 

@@ -30,8 +30,8 @@ import java.util.TimerTask;
  * A class that builds a UI for creating a new assignment
  *
  * @author Fahd Alsahali
- * @date 13/11/2022
  * @version 2.0
+ * @date 13/11/2022
  * @since 01/02/2023
  */
 
@@ -53,7 +53,6 @@ public class CreateAssignmentView extends VerticalLayout {
 
     /**
      * Creates a create new assigment view
-     *
      */
     public CreateAssignmentView() {
 
@@ -68,10 +67,10 @@ public class CreateAssignmentView extends VerticalLayout {
         Label testCaseMessage = new Label("Entre test case information:");
         add(testCaseMessage);
 
-        DateTimePicker deadline = new DateTimePicker ("Assignment deadline:");
+        DateTimePicker deadline = new DateTimePicker("Assignment deadline:");
         add(deadline);
 
-        VerticalLayout testCaseSection =  new VerticalLayout();
+        VerticalLayout testCaseSection = new VerticalLayout();
         HorizontalLayout testCaseLayout = new HorizontalLayout();
 
         TextField testCaseInput = new TextField();
@@ -93,28 +92,28 @@ public class CreateAssignmentView extends VerticalLayout {
         ArrayList<TextField> testCasesValues = new ArrayList<>();
         ArrayList<HorizontalLayout> testCasesLayout = new ArrayList<>();
 
-        Button addTestCase =  new Button("Add test case:");
+        Button addTestCase = new Button("Add test case:");
         add(addTestCase);
 
         addTestCase.addClickListener(e -> {
 
             testCasesLayout.add(new HorizontalLayout());
             testCasesValues.add(new TextField());
-            int index = testCasesValues.size()-1;
+            int index = testCasesValues.size() - 1;
             testCasesValues.get(index).setLabel("Input:");
-            testCasesLayout.get(testCasesLayout.size()-1).add(testCasesValues.get(index));
+            testCasesLayout.get(testCasesLayout.size() - 1).add(testCasesValues.get(index));
 
             testCasesValues.add(new TextField());
-            index = testCasesValues.size()-1;
+            index = testCasesValues.size() - 1;
             testCasesValues.get(index).setLabel("Expected output:");
-            testCasesLayout.get(testCasesLayout.size()-1).add(testCasesValues.get(index));
+            testCasesLayout.get(testCasesLayout.size() - 1).add(testCasesValues.get(index));
 
             testCasesValues.add(new TextField());
-            index = testCasesValues.size()-1;
+            index = testCasesValues.size() - 1;
             testCasesValues.get(index).setLabel("Marks:");
-            testCasesLayout.get(testCasesLayout.size()-1).add(testCasesValues.get(index));
+            testCasesLayout.get(testCasesLayout.size() - 1).add(testCasesValues.get(index));
 
-            testCaseSection.add(testCasesLayout.get(testCasesLayout.size()-1));
+            testCaseSection.add(testCasesLayout.get(testCasesLayout.size() - 1));
 
         });
 
@@ -129,18 +128,16 @@ public class CreateAssignmentView extends VerticalLayout {
             Assignment assignment = new Assignment(assignmentName.getValue(), courseID.getValue(), author, deadline.getValue());
             assignmentService.add(assignment);
 
-            TestCase testCase = new TestCase(testCaseInput.getValue(), testCaseExpectedOutput.getValue(),
-                    Integer.parseInt(numberOfMarks.getValue()), assignment);testCaseService.add(testCase);
+            TestCase testCase = new TestCase(testCaseInput.getValue(), testCaseExpectedOutput.getValue(), Integer.parseInt(numberOfMarks.getValue()), assignment);
+            testCaseService.add(testCase);
 
             for (int i = 0; i < testCasesValues.size(); i = i + 3) {
 
-                testCaseService.add(new TestCase(testCasesValues.get(i).getValue(), testCasesValues.get(i+1).getValue(),
-                        Integer.parseInt(testCasesValues.get(i+2).getValue()), assignment));
+                testCaseService.add(new TestCase(testCasesValues.get(i).getValue(), testCasesValues.get(i + 1).getValue(), Integer.parseInt(testCasesValues.get(i + 2).getValue()), assignment));
             }
-            startCountDown (assignment);
+            startCountDown(assignment);
 
         });
-
 
 
         VerticalLayout bottomRow = new VerticalLayout();
@@ -161,7 +158,7 @@ public class CreateAssignmentView extends VerticalLayout {
      *
      * @param assignment The assignment which the timer for its deadline will start
      */
-    private void startCountDown (Assignment assignment) {
+    private void startCountDown(Assignment assignment) {
 
         Long remainingTime = LocalDateTime.now().until(assignment.getDeadline(), ChronoUnit.SECONDS);
 
@@ -169,7 +166,7 @@ public class CreateAssignmentView extends VerticalLayout {
         TimerTask task = new DeadlineScheduler(assignment, submissionService);
 
 
-        timer.schedule(task, remainingTime*1000);
+        timer.schedule(task, remainingTime * 1000);
     }
 
 }

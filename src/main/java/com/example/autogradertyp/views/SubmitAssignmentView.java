@@ -35,8 +35,8 @@ import java.util.Optional;
  * A class that builds a UI for main menu
  *
  * @author Fahd Alsahali
- * @date 14/11/2022
  * @version 2.0
+ * @date 14/11/2022
  * @since 01/02/2023
  */
 @PermitAll
@@ -60,7 +60,6 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
 
     /**
      * Creates the UI components
-     *
      */
     public SubmitAssignmentView() {
 
@@ -93,8 +92,7 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
         submitButton.addClickListener(e -> {
             try {
                 gradeSubmission();
-                submitButton.getUI().ifPresent(ui -> ui.navigate(AssignmentView.class,
-                        new RouteParameters("assignment-ID", String.valueOf(targetAssignment.getId()))));
+                submitButton.getUI().ifPresent(ui -> ui.navigate(AssignmentView.class, new RouteParameters("assignment-ID", String.valueOf(targetAssignment.getId()))));
 
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
@@ -113,8 +111,7 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
 
         goBackButton.addClickListener(e ->
 
-                goBackButton.getUI().ifPresent(ui -> ui.navigate(AssignmentView.class,
-                        new RouteParameters("assignment-ID", String.valueOf(targetAssignment.getId())))));
+                goBackButton.getUI().ifPresent(ui -> ui.navigate(AssignmentView.class, new RouteParameters("assignment-ID", String.valueOf(targetAssignment.getId())))));
     }
 
 
@@ -142,8 +139,7 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
 
             totalMarks = totalMarks + testCases.get(i).getMarks();
 
-            boolean result = javaGrader.gradeProgram(submissionFileName, testCases.get(i).getTestCaseInput(),
-                    testCases.get(i).getExpectedOutput());
+            boolean result = javaGrader.gradeProgram(submissionFileName, testCases.get(i).getTestCaseInput(), testCases.get(i).getExpectedOutput());
 
             if (result) {
                 marksAcquired = marksAcquired + testCases.get(i).getMarks();
@@ -154,8 +150,7 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.loadUserByUsername(authentication.getName());
 
-        Submission submission = new Submission(marksAcquired, totalMarks, LocalDateTime.now(), submissionBytes,
-                submissionService.nextAttemptNumber(targetAssignment, user), targetAssignment, user);
+        Submission submission = new Submission(marksAcquired, totalMarks, LocalDateTime.now(), submissionBytes, submissionService.nextAttemptNumber(targetAssignment, user), targetAssignment, user);
         submissionService.add(submission);
 
     }

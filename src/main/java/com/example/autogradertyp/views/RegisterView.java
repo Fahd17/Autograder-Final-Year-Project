@@ -17,8 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * A class that builds a UI for the choose assignment view
  *
  * @author Fahd Alsahali
- * @date 25/01/2023
  * @version 1.0
+ * @date 25/01/2023
  */
 
 @Route("register")
@@ -34,9 +34,8 @@ public class RegisterView extends VerticalLayout {
 
     /**
      * Creates register new user view
-     *
      */
-    public RegisterView(){
+    public RegisterView() {
 
         addClassName("register-view");
         setSizeFull();
@@ -66,9 +65,8 @@ public class RegisterView extends VerticalLayout {
 
         submit.addClickListener(e -> {
             try {
-                addUser(userName.getValue(), password.getValue(),
-                        email.getValue(), studentNumber.getValue());
-            }finally {
+                addUser(userName.getValue(), password.getValue(), email.getValue(), studentNumber.getValue());
+            } finally {
                 submit.getUI().ifPresent(ui -> ui.navigate(LoginView.class));
             }
         });
@@ -78,9 +76,9 @@ public class RegisterView extends VerticalLayout {
     /**
      * A method that adds new user to the database
      *
-     * @param username The username of the user
-     * @param password Unencrypted password of the user
-     * @param email Email of the user
+     * @param username      The username of the user
+     * @param password      Unencrypted password of the user
+     * @param email         Email of the user
      * @param studentNumber The university of the user
      */
     public void addUser(String username, String password, String email, String studentNumber) {

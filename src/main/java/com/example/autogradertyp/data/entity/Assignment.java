@@ -1,21 +1,18 @@
 package com.example.autogradertyp.data.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * This class represent the assignment table in the database.
  *
  * @author Fahd Alsahali
- * @date 10/12/2022
  * @version 3.0
+ * @date 10/12/2022
  * @since 01/02/2023
  */
 
@@ -34,13 +31,13 @@ public class Assignment {
 
     private LocalDateTime deadline;
 
-    @OneToMany(mappedBy="assignment")
+    @OneToMany(mappedBy = "assignment")
     private List<TestCase> testCases;
 
-    @OneToMany(mappedBy="assignment")
+    @OneToMany(mappedBy = "assignment")
     private List<Submission> Submissions;
     @ManyToOne
-    @JoinColumn(name="author_id", nullable=false)
+    @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
 
@@ -48,11 +45,11 @@ public class Assignment {
      * Creates a new assignment
      *
      * @param assignmentName The name of the assignment
-     * @param courseID The course id of which the assignment belong to
-     * @param author The user who created the assigment
-     * @param deadline The deadline of the assigment
+     * @param courseID       The course id of which the assignment belong to
+     * @param author         The user who created the assigment
+     * @param deadline       The deadline of the assigment
      */
-    public Assignment (String assignmentName, String courseID, User author, LocalDateTime deadline){
+    public Assignment(String assignmentName, String courseID, User author, LocalDateTime deadline) {
 
         this.assignmentName = assignmentName;
         this.courseID = courseID;

@@ -6,8 +6,8 @@ import java.io.*;
  * This class runs a java program and grade it according to a test case.
  *
  * @author Fahd Alsahali
- * @date 06/11/2022
  * @version 2.0
+ * @date 06/11/2022
  * @since 14/11/2022
  */
 
@@ -19,7 +19,7 @@ public class JavaGrader {
     private String testCaseInput;
     private String testCaseOutput;
     private Boolean result;
-    private String absolutePath = System.getProperty("user.dir");
+    private final String absolutePath = System.getProperty("user.dir");
 
     /**
      * A method to grade a java program

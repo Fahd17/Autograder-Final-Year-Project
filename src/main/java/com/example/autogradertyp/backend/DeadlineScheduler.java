@@ -16,20 +16,19 @@ import java.util.TimerTask;
  * generate a CSV file of the assigment results.
  *
  * @author Fahd Alsahali
- * @date 02/02/2023
  * @version 1.0
- *
+ * @date 02/02/2023
  */
 
 public class DeadlineScheduler extends TimerTask {
 
     private final Assignment assignment;
-    private SubmissionService submissionService;
+    private final SubmissionService submissionService;
 
     /**
      * Creates a new deadline schedule instance for an assignment.
      *
-     * @param assignment The targeted assignment
+     * @param assignment        The targeted assignment
      * @param submissionService To modify the submission table in the database
      */
     public DeadlineScheduler(Assignment assignment, SubmissionService submissionService) {
@@ -68,8 +67,7 @@ public class DeadlineScheduler extends TimerTask {
             csvData.add(submissions.get(i).ToStringCSV());
         }
 
-        CSVWriter writer = new CSVWriter(new FileWriter(".\\ResultsCSV\\" + assignment.getAssignmentName()
-                + assignment.getCourseID() + ".csv"));
+        CSVWriter writer = new CSVWriter(new FileWriter(".\\ResultsCSV\\" + assignment.getAssignmentName() + assignment.getCourseID() + ".csv"));
         writer.writeAll(csvData);
         writer.close();
 

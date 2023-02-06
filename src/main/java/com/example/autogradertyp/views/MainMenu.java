@@ -2,7 +2,6 @@ package com.example.autogradertyp.views;
 
 import com.example.autogradertyp.security.SecurityService;
 import com.vaadin.flow.component.Unit;
-import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Label;
@@ -10,8 +9,6 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.annotation.security.PermitAll;
 
@@ -19,8 +16,8 @@ import javax.annotation.security.PermitAll;
  * A class that builds a UI for main menu
  *
  * @author Fahd Alsahali
- * @date 13/11/2022
  * @version 1.0
+ * @date 13/11/2022
  */
 
 @PermitAll
@@ -40,6 +37,7 @@ public class MainMenu extends VerticalLayout {
         createBody();
 
     }
+
     private void createHeader() {
         Button logout = new Button("Log out", e -> securityService.logout());
         HorizontalLayout header = new HorizontalLayout(logout);
@@ -47,6 +45,7 @@ public class MainMenu extends VerticalLayout {
         add(header);
 
     }
+
     private void createBody() {
         VerticalLayout bodyLayout = new VerticalLayout();
         HorizontalLayout bannerLayout = new HorizontalLayout();

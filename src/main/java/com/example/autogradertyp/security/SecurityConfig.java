@@ -1,6 +1,7 @@
 package com.example.autogradertyp.security;
 
 import com.example.autogradertyp.views.LoginView;
+import com.vaadin.flow.spring.security.VaadinWebSecurity;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,11 +9,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.vaadin.flow.spring.security.VaadinWebSecurity;
-
-@EnableWebSecurity 
+@EnableWebSecurity
 @Configuration
-public class SecurityConfig extends VaadinWebSecurity { 
+public class SecurityConfig extends VaadinWebSecurity {
 
     @Bean
     public PasswordEncoder passwordEncoder() {

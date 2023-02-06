@@ -30,8 +30,8 @@ import java.util.Optional;
  * along with the option to new submission
  *
  * @author Fahd Alsahali
- * @date 01/02/2023
  * @version 1.0
+ * @date 01/02/2023
  */
 
 @PermitAll
@@ -52,7 +52,6 @@ public class AssignmentView extends VerticalLayout implements BeforeEnterObserve
 
     /**
      * Creates a new assigment view and adds the option to go back and to new submission
-     *
      */
     public AssignmentView() {
 
@@ -93,8 +92,7 @@ public class AssignmentView extends VerticalLayout implements BeforeEnterObserve
 
             Submission keptSubmission = submissionService.getUserCurrentSubmission(submissions);
 
-            add(new H1(keptSubmission.getMarks() + " out of " + keptSubmission.getTotalMarks()
-                    + " submitted at " + keptSubmission.getSubmissionDataTimeFormatted()));
+            add(new H1(keptSubmission.getMarks() + " out of " + keptSubmission.getTotalMarks() + " submitted at " + keptSubmission.getSubmissionDataTimeFormatted()));
         } else {
 
             add(new H1("No submissions available for this assignment."));
@@ -103,7 +101,6 @@ public class AssignmentView extends VerticalLayout implements BeforeEnterObserve
 
     /**
      * A method that display an option to navigate to the new submission page
-     *
      */
     private void newSubmission() {
         Button newSubmission = new Button("New submission:");
@@ -111,17 +108,15 @@ public class AssignmentView extends VerticalLayout implements BeforeEnterObserve
         newSubmission.setHeight(40, Unit.MM);
         newSubmission.addClickListener(e ->
 
-                newSubmission.getUI().ifPresent(ui -> ui.navigate(SubmitAssignmentView.class,
-                        new RouteParameters("assignment-ID", String.valueOf(targetAssignment.getId())))));
+                newSubmission.getUI().ifPresent(ui -> ui.navigate(SubmitAssignmentView.class, new RouteParameters("assignment-ID", String.valueOf(targetAssignment.getId())))));
 
         add(newSubmission);
     }
 
     /**
      * A method that display an option to go back to the assignment option
-     *
      */
-    private void goBackButton () {
+    private void goBackButton() {
 
         VerticalLayout bottomRow = new VerticalLayout();
 

@@ -11,8 +11,8 @@ import java.util.List;
  * A service class that provide CRUD of the assigment table in the database
  *
  * @author Fahd Alsahali
- * @date 10/12/2022
  * @version 1.0
+ * @date 10/12/2022
  */
 
 @Service

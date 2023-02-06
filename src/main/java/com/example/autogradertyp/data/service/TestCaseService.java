@@ -13,8 +13,8 @@ import java.util.List;
  * A service class that provide CRUD of the testcase table in the database
  *
  * @author Fahd Alsahali
- * @date 10/12/2022
  * @version 1.0
+ * @date 10/12/2022
  */
 @Service
 public class TestCaseService {
@@ -31,7 +31,7 @@ public class TestCaseService {
      *
      * @return All the test cases
      */
-    public List<TestCase> getAllTestCases(){
+    public List<TestCase> getAllTestCases() {
         return repository.findAll();
     }
 
@@ -40,7 +40,7 @@ public class TestCaseService {
      *
      * @param testCase The test case to be added
      */
-    public void add(TestCase testCase){
+    public void add(TestCase testCase) {
 
         repository.save(testCase);
     }
@@ -50,7 +50,7 @@ public class TestCaseService {
      *
      * @param testCase The test case to be updated
      */
-    public void update(TestCase testCase){
+    public void update(TestCase testCase) {
         repository.save(testCase);
     }
 
@@ -59,7 +59,7 @@ public class TestCaseService {
      *
      * @param testCase The test case to be deleted
      */
-    public void delete(TestCase testCase){
+    public void delete(TestCase testCase) {
         repository.delete(testCase);
     }
 
@@ -69,7 +69,7 @@ public class TestCaseService {
      * @param assignment The target assigment
      * @return The test cases of the specified assignment
      */
-    public ArrayList<TestCase> getTestCasesForAssignment (Assignment assignment){
+    public ArrayList<TestCase> getTestCasesForAssignment(Assignment assignment) {
 
         ArrayList<TestCase> testCases = new ArrayList<>();
         List<TestCase> allTestCases;
@@ -78,7 +78,7 @@ public class TestCaseService {
         // going over all the test case and checking related to the targeted assignment
         for (int i = 0; i < allTestCases.size(); i++) {
 
-            if(allTestCases.get(i).getAssignment().getId().equals(assignment.getId())){
+            if (allTestCases.get(i).getAssignment().getId().equals(assignment.getId())) {
                 testCases.add(allTestCases.get(i));
             }
         }

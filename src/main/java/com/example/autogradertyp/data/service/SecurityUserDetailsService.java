@@ -1,19 +1,19 @@
 package com.example.autogradertyp.data.service;
 
+import com.example.autogradertyp.data.entity.User;
+import com.example.autogradertyp.data.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import com.example.autogradertyp.data.entity.User;
-import com.example.autogradertyp.data.repository.UserRepository;
 
 /**
  * A service class that provide CRUD of the user table in the database
  *
  * @author Fahd Alsahali
- * @date 25/01/2023
  * @version 1.0
+ * @date 25/01/2023
  */
 
 @Service

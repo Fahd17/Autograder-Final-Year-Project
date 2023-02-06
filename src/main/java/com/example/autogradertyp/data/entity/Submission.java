@@ -1,6 +1,5 @@
 package com.example.autogradertyp.data.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,9 +11,8 @@ import java.time.format.DateTimeFormatter;
  * This class represent the submission table in the database.
  *
  * @author Fahd Alsahali
- * @date 01/02/2023
  * @version 1.0
- *
+ * @date 01/02/2023
  */
 
 @Data
@@ -49,13 +47,13 @@ public class Submission {
     /**
      * Creates a new submission for an assigment
      *
-     * @param marks The marks the submission achieved
-     * @param totalMarks The total marks available
+     * @param marks              The marks the submission achieved
+     * @param totalMarks         The total marks available
      * @param submissionDataTime The time and date of submission
-     * @param data The file submitted
-     * @param attemptNumber The index of the attempts the user had on an assigment
-     * @param assignment The assigment the submission was submitted to
-     * @param user The user that submitted
+     * @param data               The file submitted
+     * @param attemptNumber      The index of the attempts the user had on an assigment
+     * @param assignment         The assigment the submission was submitted to
+     * @param user               The user that submitted
      */
     public Submission(int marks, int totalMarks, LocalDateTime submissionDataTime, byte[] data, int attemptNumber, Assignment assignment, User user) {
 
@@ -116,6 +114,15 @@ public class Submission {
     }
 
     /**
+     * A method that sets the submission time and date
+     *
+     * @param submissionDataTime The submission time and date
+     */
+    public void setSubmissionDataTime(LocalDateTime submissionDataTime) {
+        this.submissionDataTime = submissionDataTime;
+    }
+
+    /**
      * A method that gets the submission time and date formatted
      *
      * @return The submission time and date formatted
@@ -124,15 +131,6 @@ public class Submission {
 
         DateTimeFormatter formatSubmissionTime = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         return getSubmissionDataTime().format(formatSubmissionTime);
-    }
-
-    /**
-     * A method that sets the submission time and date
-     *
-     * @param submissionDataTime The submission time and date
-     */
-    public void setSubmissionDataTime(LocalDateTime submissionDataTime) {
-        this.submissionDataTime = submissionDataTime;
     }
 
     /**

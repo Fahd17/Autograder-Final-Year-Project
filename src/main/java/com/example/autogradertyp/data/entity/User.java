@@ -1,26 +1,22 @@
 package com.example.autogradertyp.data.entity;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import javax.persistence.*;
-
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * This class represent the user table in the database.
  *
  * @author Fahd Alsahali
- * @date 25/01/2023
  * @version 1.0
- *
+ * @date 25/01/2023
  */
 
 
@@ -38,10 +34,10 @@ public class User implements UserDetails {
     @GeneratedValue
     private Long id;
 
-    
+
     private String username;
 
-    @Column(name="password",columnDefinition="LONGTEXT")
+    @Column(name = "password", columnDefinition = "LONGTEXT")
     private String password;
 
     @Column(name = "account_non_locked")
@@ -53,24 +49,24 @@ public class User implements UserDetails {
 
     private String studentNumber;
 
-    @OneToMany(mappedBy="user")
+    @OneToMany(mappedBy = "user")
     private List<Submission> Submissions;
 
-    @OneToMany(mappedBy="author")
+    @OneToMany(mappedBy = "author")
     private List<Assignment> assignments;
 
     /**
      * A method to register a new user
      *
-     * @param username The username of the user
-     * @param password The encrypted password of the user
+     * @param username         The username of the user
+     * @param password         The encrypted password of the user
      * @param accountNonLocked To indicates if the account is locked
-     * @param email The email of the user
-     * @param role The role of the user
-     * @param studentNumber The university id of the user
+     * @param email            The email of the user
+     * @param role             The role of the user
+     * @param studentNumber    The university id of the user
      */
     public User(String username, String password, boolean accountNonLocked,
-                String email,String role, String studentNumber) {
+                String email, String role, String studentNumber) {
         this.username = username;
         this.password = password;
         this.accountNonLocked = accountNonLocked;
@@ -127,28 +123,33 @@ public class User implements UserDetails {
     public void setUsername(String username) {
         this.username = username;
     }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
+
     @Override
     public boolean isAccountNonLocked() {
 
         return accountNonLocked;
     }
+
+    public void setAccountNonLocked(Boolean accountNonLocked) {
+
+        this.accountNonLocked = accountNonLocked;
+    }
+
     @Override
     public boolean isCredentialsNonExpired() {
 
         return true;
     }
-    @Override public boolean isEnabled() {
+
+    @Override
+    public boolean isEnabled() {
 
         return true;
-    }
-
-    public void setAccountNonLocked(Boolean accountNonLocked) {
-
-        this.accountNonLocked = accountNonLocked;
     }
 
     /**
