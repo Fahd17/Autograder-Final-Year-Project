@@ -1,10 +1,13 @@
 package com.example.autogradertyp.data.service;
 
 import com.example.autogradertyp.data.entity.Assignment;
+import com.example.autogradertyp.data.entity.Course;
+import com.example.autogradertyp.data.entity.TestCase;
 import com.example.autogradertyp.data.repository.AssigmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,7 +29,7 @@ public class AssignmentService {
     }
 
     /**
-     * A method that gets all assignment in the database
+     * A method that gets all assignments in the database
      *
      * @return All the assignment in the database
      */
@@ -55,6 +58,30 @@ public class AssignmentService {
         }
         return targetAssignment;
     }
+
+    /**
+     * A method that gets the assignments of a specific course
+     *
+     * @param course The target course
+     * @return The assignments of the specified course
+     */
+    public ArrayList<Assignment> getAssignmentsForCourse(Course course) {
+
+        ArrayList<Assignment> assignments = new ArrayList<>();
+        List<Assignment> allAssignment = getAllAssignments();
+
+        // going over all the assignments and checking related to the targeted course
+        for (int i = 0; i < allAssignment.size(); i++) {
+
+            if (allAssignment.get(i).getCourse().getId().equals(course.getId())) {
+                assignments.add(allAssignment.get(i));
+            }
+        }
+
+        return assignments;
+
+    }
+
 
     /**
      * Adds an assignment to the assignment table

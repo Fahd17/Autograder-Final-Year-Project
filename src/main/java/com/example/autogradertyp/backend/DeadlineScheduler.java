@@ -2,6 +2,7 @@ package com.example.autogradertyp.backend;
 
 import com.example.autogradertyp.data.entity.Assignment;
 import com.example.autogradertyp.data.entity.Submission;
+import com.example.autogradertyp.data.service.AssignmentService;
 import com.example.autogradertyp.data.service.SubmissionService;
 import com.opencsv.CSVWriter;
 
@@ -10,6 +11,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
+
+import static com.example.autogradertyp.backend.CSVGenerator.createResultsCSV;
 
 /**
  * This class is a schedule which runs on every assignment deadline and
@@ -25,16 +28,19 @@ public class DeadlineScheduler extends TimerTask {
     private final Assignment assignment;
     private final SubmissionService submissionService;
 
+    private final AssignmentService assignmentService;
+
     /**
      * Creates a new deadline schedule instance for an assignment.
      *
      * @param assignment        The targeted assignment
      * @param submissionService To modify the submission table in the database
      */
-    public DeadlineScheduler(Assignment assignment, SubmissionService submissionService) {
+    public DeadlineScheduler(Assignment assignment, SubmissionService submissionService, AssignmentService assignmentService) {
 
         this.assignment = assignment;
         this.submissionService = submissionService;
+        this.assignmentService = assignmentService;
     }
 
     /**
@@ -44,32 +50,9 @@ public class DeadlineScheduler extends TimerTask {
     public void run() {
 
         try {
-            createResultsCSV();
+            createResultsCSV(submissionService, assignment, assignmentService);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * This method gets the final submissions of the target assigment and create a CSV file of the results
-     *
-     * @throws IOException
-     */
-    public void createResultsCSV() throws IOException {
-
-        List<Submission> submissions = submissionService.getFinalSubmissions(assignment);
-
-        List<String[]> csvData = new ArrayList<>();
-        String[] header = {"Student id", "Mark", "Marks available", "email"};
-        csvData.add(header);
-
-        for (int i = 0; i < submissions.size(); i++) {
-            csvData.add(submissions.get(i).ToStringCSV());
-        }
-
-        CSVWriter writer = new CSVWriter(new FileWriter(".\\ResultsCSV\\" + assignment.getAssignmentName() + assignment.getCourseID() + ".csv"));
-        writer.writeAll(csvData);
-        writer.close();
-
     }
 }

@@ -27,9 +27,11 @@ public class Assignment {
     private Long id;
 
     private String assignmentName;
-    private String courseID;
 
     private LocalDateTime deadline;
+
+    @Column(nullable = true)
+    private byte[] assignmentResultsCSV;
 
     @OneToMany(mappedBy = "assignment")
     private List<TestCase> testCases;
@@ -40,19 +42,23 @@ public class Assignment {
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
+    @ManyToOne
+    @JoinColumn(name = "course_id", nullable = false)
+    private Course course;
+
 
     /**
      * Creates a new assignment
      *
      * @param assignmentName The name of the assignment
-     * @param courseID       The course id of which the assignment belong to
+     * @param course         The course of which the assignment belong to
      * @param author         The user who created the assigment
      * @param deadline       The deadline of the assigment
      */
-    public Assignment(String assignmentName, String courseID, User author, LocalDateTime deadline) {
+    public Assignment(String assignmentName, Course course, User author, LocalDateTime deadline) {
 
         this.assignmentName = assignmentName;
-        this.courseID = courseID;
+        this.course = course;
         this.author = author;
         this.deadline = deadline;
     }
@@ -81,17 +87,17 @@ public class Assignment {
      *
      * @return The course id
      */
-    public String getCourseID() {
-        return courseID;
+    public Course getCourse() {
+        return course;
     }
 
     /**
      * A method to set the course id
      *
-     * @param courseID The id of the course
+     * @param course The id of the course
      */
-    public void setCourseID(String courseID) {
-        this.courseID = courseID;
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     /**
@@ -128,5 +134,23 @@ public class Assignment {
      */
     public void setDeadline(LocalDateTime deadline) {
         this.deadline = deadline;
+    }
+
+    /**
+     * A method to get the CSV file of the assignment results
+     *
+     * @return The bytes of the CSV file
+     */
+    public byte[] getAssignmentResultsCSV() {
+        return assignmentResultsCSV;
+    }
+
+    /**
+     * A method to set the CSV of the assignment results
+     *
+     * @param assignmentResultsCSV The bytes of the CSV file
+     */
+    public void setAssignmentResultsCSV(byte[] assignmentResultsCSV) {
+        this.assignmentResultsCSV = assignmentResultsCSV;
     }
 }
