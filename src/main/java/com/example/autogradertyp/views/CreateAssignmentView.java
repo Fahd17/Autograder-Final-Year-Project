@@ -2,17 +2,16 @@ package com.example.autogradertyp.views;
 
 import com.example.autogradertyp.backend.DeadlineScheduler;
 import com.example.autogradertyp.data.entity.Assignment;
+import com.example.autogradertyp.data.entity.Course;
 import com.example.autogradertyp.data.entity.TestCase;
 import com.example.autogradertyp.data.entity.User;
-import com.example.autogradertyp.data.service.AssignmentService;
-import com.example.autogradertyp.data.service.SecurityUserDetailsService;
-import com.example.autogradertyp.data.service.SubmissionService;
-import com.example.autogradertyp.data.service.TestCaseService;
+import com.example.autogradertyp.data.service.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +22,7 @@ import javax.annotation.security.RolesAllowed;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -51,24 +51,24 @@ public class CreateAssignmentView extends VerticalLayout {
     @Autowired
     private SubmissionService submissionService;
 
+    private Select<Course> select;
+
     /**
      * Creates a create new assigment view
      */
-    public CreateAssignmentView() {
+    public CreateAssignmentView(CourseService courseService) {
 
         TextField assignmentName = new TextField();
         assignmentName.setLabel("Entre assignment name:");
         add(assignmentName);
 
-        TextField courseID = new TextField();
-        courseID.setLabel("Entre course ID:");
-        add(courseID);
-
-        Label testCaseMessage = new Label("Entre test case information:");
-        add(testCaseMessage);
+        createCoursesSelectMenu(courseService);
 
         DateTimePicker deadline = new DateTimePicker("Assignment deadline:");
         add(deadline);
+
+        Label testCaseMessage = new Label("Entre test case information:");
+        add(testCaseMessage);
 
         VerticalLayout testCaseSection = new VerticalLayout();
         HorizontalLayout testCaseLayout = new HorizontalLayout();
@@ -125,7 +125,7 @@ public class CreateAssignmentView extends VerticalLayout {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User author = userService.loadUserByUsername(authentication.getName());
 
-            Assignment assignment = new Assignment(assignmentName.getValue(), courseID.getValue(), author, deadline.getValue());
+            Assignment assignment = new Assignment(assignmentName.getValue(), select.getValue(), author, deadline.getValue());
             assignmentService.add(assignment);
 
             TestCase testCase = new TestCase(testCaseInput.getValue(), testCaseExpectedOutput.getValue(), Integer.parseInt(numberOfMarks.getValue()), assignment);
@@ -153,6 +153,19 @@ public class CreateAssignmentView extends VerticalLayout {
                 goBackButton.getUI().ifPresent(ui -> ui.navigate(MainMenu.class)));
     }
 
+    private void createCoursesSelectMenu (CourseService courseService) {
+
+        select = new Select<>();
+        select.setLabel("Course");
+
+        select.setItemLabelGenerator(Course::getName);
+
+         List<Course> courses = courseService.getAllCourses();
+        select.setItems(courses);
+        add(select);
+
+    }
+
     /**
      * A method that starts a timer to the deadline of the assignment
      *
@@ -163,7 +176,7 @@ public class CreateAssignmentView extends VerticalLayout {
         Long remainingTime = LocalDateTime.now().until(assignment.getDeadline(), ChronoUnit.SECONDS);
 
         Timer timer = new Timer();
-        TimerTask task = new DeadlineScheduler(assignment, submissionService);
+        TimerTask task = new DeadlineScheduler(assignment, submissionService, assignmentService);
 
 
         timer.schedule(task, remainingTime * 1000);
