@@ -13,6 +13,13 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class creates CSV file for an assignment results
+ *
+ * @author Fahd Alsahali
+ * @version 1.0
+ * @date 12/02/2023
+ */
 public class CSVGenerator {
 
 

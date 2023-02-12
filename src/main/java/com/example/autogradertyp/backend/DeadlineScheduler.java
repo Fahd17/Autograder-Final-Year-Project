@@ -15,12 +15,12 @@ import java.util.TimerTask;
 import static com.example.autogradertyp.backend.CSVGenerator.createResultsCSV;
 
 /**
- * This class is a schedule which runs on every assignment deadline and
- * generate a CSV file of the assigment results.
+ * This class is a schedule which runs on every assignment deadline
  *
  * @author Fahd Alsahali
- * @version 1.0
+ * @version 2.0
  * @date 02/02/2023
+ * @since 12/02/2023
  */
 
 public class DeadlineScheduler extends TimerTask {
