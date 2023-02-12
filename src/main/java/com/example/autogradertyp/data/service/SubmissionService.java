@@ -73,6 +73,29 @@ public class SubmissionService {
     }
 
     /**
+     * A method that gets all the submission of an assignment
+     *
+     * @param assignment The targeted assignment
+     * @return The test cases of the user to the assignment
+     */
+    public ArrayList<Submission> getSubmissionsForAssignment(Assignment assignment) {
+
+        ArrayList<Submission> submissions = new ArrayList<>();
+        List<Submission> allSubmissions = getAllSubmissions();
+
+        //going over all submissions
+        for (int i = 0; i < allSubmissions.size(); i++) {
+
+            if (allSubmissions.get(i).getAssignment().getId().equals(assignment.getId())) {
+
+                submissions.add(allSubmissions.get(i));
+            }
+        }
+
+        return submissions;
+    }
+
+    /**
      * A method that gets the most recent submission with the highest mark achieved
      *
      * @param submissions The list of the submissions
@@ -100,7 +123,7 @@ public class SubmissionService {
     public ArrayList<Submission> getFinalSubmissions(Assignment assignment) {
 
         ArrayList<User> users = new ArrayList<>();
-        List<Submission> allSubmissions = getAllSubmissions();
+        List<Submission> allSubmissions = getSubmissionsForAssignment(assignment);
         ArrayList<Submission> finalSubmissions = new ArrayList<>();
 
         //going over all submissions to figure out which user that attempted the assignment
