@@ -1,6 +1,6 @@
 package com.example.autogradertyp.views;
 
-import com.example.autogradertyp.backend.JavaGrader;
+import com.example.autogradertyp.backend.RestrictedEnvironmentConnection;
 import com.example.autogradertyp.data.entity.Assignment;
 import com.example.autogradertyp.data.entity.Submission;
 import com.example.autogradertyp.data.entity.TestCase;
@@ -92,7 +92,8 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
         submitButton.addClickListener(e -> {
             try {
                 gradeSubmission();
-                submitButton.getUI().ifPresent(ui -> ui.navigate(AssignmentView.class, new RouteParameters("assignment-ID", String.valueOf(targetAssignment.getId()))));
+                submitButton.getUI().ifPresent(ui -> ui.navigate(AssignmentView.class,
+                        new RouteParameters("assignment-ID", String.valueOf(targetAssignment.getId()))));
 
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
@@ -111,7 +112,8 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
 
         goBackButton.addClickListener(e ->
 
-                goBackButton.getUI().ifPresent(ui -> ui.navigate(AssignmentView.class, new RouteParameters("assignment-ID", String.valueOf(targetAssignment.getId())))));
+                goBackButton.getUI().ifPresent(ui -> ui.navigate(AssignmentView.class,
+                        new RouteParameters("assignment-ID", String.valueOf(targetAssignment.getId())))));
     }
 
 
@@ -130,7 +132,9 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
 
     private void gradeSubmission() throws IOException {
 
-        JavaGrader javaGrader = new JavaGrader();
+        RestrictedEnvironmentConnection connection =  new RestrictedEnvironmentConnection();
+        connection.sendFileToRestrictedEnvironment(submissionFileName + ".java", submissionBytes);
+
         ArrayList<TestCase> testCases = testCaseService.getTestCasesForAssignment(targetAssignment);
         int totalMarks = 0;
         int marksAcquired = 0;
@@ -139,7 +143,8 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
 
             totalMarks = totalMarks + testCases.get(i).getMarks();
 
-            boolean result = javaGrader.gradeProgram(submissionFileName, testCases.get(i).getTestCaseInput(), testCases.get(i).getExpectedOutput());
+            boolean result = connection.gradeATestCase(submissionFileName, testCases.get(i).getTestCaseInput(),
+                    testCases.get(i).getExpectedOutput());
 
             if (result) {
                 marksAcquired = marksAcquired + testCases.get(i).getMarks();
@@ -150,7 +155,8 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.loadUserByUsername(authentication.getName());
 
-        Submission submission = new Submission(marksAcquired, totalMarks, LocalDateTime.now(), submissionBytes, submissionService.nextAttemptNumber(targetAssignment, user), targetAssignment, user);
+        Submission submission = new Submission(marksAcquired, totalMarks, LocalDateTime.now(), submissionBytes,
+                submissionService.nextAttemptNumber(targetAssignment, user), targetAssignment, user);
         submissionService.add(submission);
 
     }
