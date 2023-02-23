@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.TimerTask;
 
 import static com.example.autogradertyp.backend.CSVGenerator.createResultsCSV;
+import static com.example.autogradertyp.backend.CanvasIntegrator.uploadStudentsGrade;
 
 /**
  * This class is a schedule which runs on every assignment deadline
@@ -51,6 +52,10 @@ public class DeadlineScheduler extends TimerTask {
 
         try {
             createResultsCSV(submissionService, assignment, assignmentService);
+
+            List<Submission> submissions = submissionService.getFinalSubmissions(assignment);
+            uploadStudentsGrade((ArrayList<Submission>) submissions);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
