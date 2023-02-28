@@ -8,17 +8,23 @@ import com.example.autogradertyp.data.entity.User;
 import com.example.autogradertyp.data.service.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datetimepicker.DateTimePicker;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.upload.Upload;
+import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.annotation.security.RolesAllowed;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -26,13 +32,15 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.example.autogradertyp.backend.TestCasesReader.readTestCases;
+
 /**
  * A class that builds a UI for creating a new assignment
  *
  * @author Fahd Alsahali
  * @version 2.0
  * @date 13/11/2022
- * @since 01/02/2023
+ * @since 28/02/2023
  */
 
 @RolesAllowed({"ROLE_ADMIN"})
@@ -50,6 +58,10 @@ public class CreateAssignmentView extends VerticalLayout {
 
     @Autowired
     private SubmissionService submissionService;
+
+    private ArrayList<TextField> testCasesValues;
+    private ArrayList<HorizontalLayout> testCasesLayout;
+    private VerticalLayout testCaseSection;
 
     private Select<Course> select;
 
@@ -70,7 +82,7 @@ public class CreateAssignmentView extends VerticalLayout {
         Label testCaseMessage = new Label("Entre test case information:");
         add(testCaseMessage);
 
-        VerticalLayout testCaseSection = new VerticalLayout();
+        testCaseSection = new VerticalLayout();
         HorizontalLayout testCaseLayout = new HorizontalLayout();
 
         TextField testCaseInput = new TextField();
@@ -85,12 +97,15 @@ public class CreateAssignmentView extends VerticalLayout {
         numberOfMarks.setLabel("Marks:");
         testCaseLayout.add(numberOfMarks);
 
+        add(new H1("To test cases from a file."));
+        fileUploader();
 
         testCaseSection.add(testCaseLayout);
         add(testCaseSection);
 
-        ArrayList<TextField> testCasesValues = new ArrayList<>();
-        ArrayList<HorizontalLayout> testCasesLayout = new ArrayList<>();
+        testCasesValues = new ArrayList<>();
+        testCasesLayout = new ArrayList<>();
+
 
         Button addTestCase = new Button("Add test case:");
         add(addTestCase);
@@ -153,14 +168,14 @@ public class CreateAssignmentView extends VerticalLayout {
                 goBackButton.getUI().ifPresent(ui -> ui.navigate(MainMenu.class)));
     }
 
-    private void createCoursesSelectMenu (CourseService courseService) {
+    private void createCoursesSelectMenu(CourseService courseService) {
 
         select = new Select<>();
         select.setLabel("Course");
 
         select.setItemLabelGenerator(Course::getName);
 
-         List<Course> courses = courseService.getAllCourses();
+        List<Course> courses = courseService.getAllCourses();
         select.setItems(courses);
         add(select);
 
@@ -182,4 +197,77 @@ public class CreateAssignmentView extends VerticalLayout {
         timer.schedule(task, remainingTime * 1000);
     }
 
+    /**
+     * Adds a new testcase to the view
+     *
+     * @param input  The input of teh testcase
+     * @param output The output of the testcase
+     * @param mark   The mark rewarded for that testcase
+     */
+    public void addTestCase(String input, String output, String mark) {
+
+        testCasesLayout.add(new HorizontalLayout());
+        testCasesValues.add(new TextField());
+        int index = testCasesValues.size() - 1;
+        testCasesValues.get(index).setLabel("Input:");
+        testCasesValues.get(index).setValue(input);
+        testCasesLayout.get(testCasesLayout.size() - 1).add(testCasesValues.get(index));
+
+        testCasesValues.add(new TextField());
+        index = testCasesValues.size() - 1;
+        testCasesValues.get(index).setLabel("Expected output:");
+        testCasesValues.get(index).setValue(output);
+        testCasesLayout.get(testCasesLayout.size() - 1).add(testCasesValues.get(index));
+
+        testCasesValues.add(new TextField());
+        index = testCasesValues.size() - 1;
+        testCasesValues.get(index).setLabel("Marks:");
+        testCasesLayout.get(testCasesLayout.size() - 1).add(testCasesValues.get(index));
+        testCasesValues.get(index).setValue(mark);
+        testCaseSection.add(testCasesLayout.get(testCasesLayout.size() - 1));
+
+    }
+
+    private void fileUploader() {
+
+        add(new H1("Upload testcases:"));
+
+        MemoryBuffer memoryBuffer = new MemoryBuffer();
+
+        Upload upload = new Upload(memoryBuffer);
+        upload.addFinishedListener(e -> {
+            SaveUploadedFile(memoryBuffer, e.getFileName());
+            String submissionFileName = e.getFileName().replace(".json", "");
+            try {
+                readTestCases(submissionFileName, this);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+
+
+        });
+
+        add(upload);
+    }
+
+    private void SaveUploadedFile(MemoryBuffer memoryBuffer, String name) {
+
+        InputStream inputStream = memoryBuffer.getInputStream();
+
+
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(".\\submissions_directory\\" + name);
+            byte[] dataBuffer = new byte[1024];
+            int bytesRead;
+
+            while ((bytesRead = inputStream.read(dataBuffer, 0, 1024)) != -1) {
+                fileOutputStream.write(dataBuffer, 0, bytesRead);
+            }
+            fileOutputStream.close();
+
+        } catch (IOException IO) {
+            System.out.print("Invalid Path");
+
+        }
+    }
 }
