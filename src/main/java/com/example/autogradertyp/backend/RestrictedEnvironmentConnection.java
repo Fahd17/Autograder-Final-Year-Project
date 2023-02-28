@@ -35,7 +35,7 @@ public class RestrictedEnvironmentConnection {
 
         OkHttpClient okHttpClient = new OkHttpClient()
                 .newBuilder()
-                .connectTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(180, TimeUnit.SECONDS)
                 .build();
 
         // A request body to append file
@@ -79,7 +79,7 @@ public class RestrictedEnvironmentConnection {
 
         OkHttpClient okHttpClient = new OkHttpClient()
                 .newBuilder()
-                .connectTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(180, TimeUnit.SECONDS)
                 .build();
 
         Request request = new Request.Builder()
