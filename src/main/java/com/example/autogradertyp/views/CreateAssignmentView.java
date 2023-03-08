@@ -1,6 +1,7 @@
 package com.example.autogradertyp.views;
 
 import com.example.autogradertyp.backend.DeadlineScheduler;
+import com.example.autogradertyp.backend.PlagiarismDetectorConnection;
 import com.example.autogradertyp.data.entity.Assignment;
 import com.example.autogradertyp.data.entity.Course;
 import com.example.autogradertyp.data.entity.TestCase;
@@ -17,11 +18,13 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.frontend.installer.Platform;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.annotation.security.RolesAllowed;
+import org.json.simple.JSONObject;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -152,6 +155,17 @@ public class CreateAssignmentView extends VerticalLayout {
             }
             startCountDown(assignment);
 
+
+            JSONObject respose = null;
+            try {
+                respose = PlagiarismDetectorConnection.crateCheck("Assignment" + assignment.getId());
+                String checkId = respose.get("id")+ "";
+                assignment.setPlagiarismCheckId(checkId);
+                assignmentService.updateAssignment(assignment);
+
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
         });
 
 

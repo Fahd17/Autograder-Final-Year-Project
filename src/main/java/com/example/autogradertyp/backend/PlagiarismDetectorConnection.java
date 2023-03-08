@@ -4,19 +4,19 @@ import okhttp3.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class PlagiarismDetectorConnection {
 
     private static String apiEndpoint = "https://codequiry.com/api/v1/";
-
     private static String apiKey = "5796c39f4698e097692974916cc02c2691e7118030ddf35f78e5d7c5426a7bdf";
 
-    static File file = new File(".\\submissions_directory\\hey.zip");
-
-    public static OkHttpClient getOkHttpClientInstance () {
+    public static OkHttpClient getOkHttpClientInstance() {
 
         OkHttpClient okHttpClient = new OkHttpClient()
                 .newBuilder()
@@ -26,7 +26,7 @@ public class PlagiarismDetectorConnection {
         return okHttpClient;
     }
 
-    public static JSONObject crateCheck (String name) throws Exception {
+    public static JSONObject crateCheck(String name) throws Exception {
 
         HttpUrl url = HttpUrl.parse(apiEndpoint).newBuilder()
                 .addPathSegments("check")
@@ -42,21 +42,38 @@ public class PlagiarismDetectorConnection {
         Request request = new Request.Builder()
                 .url(url)
                 .post(formBody)
-                .header("Accept","*/*")
+                .header("Accept", "*/*")
                 .header("apikey", apiKey)
                 .build();
 
-
-
         Response response = getOkHttpClientInstance().newCall(request).execute();
 
+        String jsonString  = response.body().string();
         JSONParser parser = new JSONParser();
-        JSONObject jsonResponse = (JSONObject) parser.parse(response.body().string());
-
+        System.out.println(jsonString);
+        JSONObject jsonResponse = (JSONObject) parser.parse(jsonString);
+        System.out.println(jsonResponse.toJSONString());
         return jsonResponse;
     }
 
-    public static JSONObject uploadFile (File file, String checkId) throws Exception {
+    public static JSONObject uploadFile(String filename, byte[] input, String checkId) throws Exception {
+
+        String FILEPATH = ".\\submissions_directory\\" + filename + ".zip";
+        File file = new File(FILEPATH);
+
+        try {
+            //Converting bytes of file to bytes of zip file
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ZipOutputStream zos = new ZipOutputStream(baos);
+            ZipEntry entry = new ZipEntry(filename + ".java");
+            entry.setSize(input.length);
+            zos.putNextEntry(entry);
+            zos.write(input);
+            zos.closeEntry();
+            zos.close();
+        } catch (Exception e) {
+            System.out.println("Exception: " + e);
+        }
 
         //Building the url
         HttpUrl url = HttpUrl.parse(apiEndpoint).newBuilder()
@@ -85,7 +102,7 @@ public class PlagiarismDetectorConnection {
 
     }
 
-    public static JSONObject startCheck (String checkId) throws Exception {
+    public static JSONObject startCheck(String checkId) throws Exception {
 
         //Building the url
         HttpUrl url = HttpUrl.parse(apiEndpoint).newBuilder()
@@ -114,7 +131,7 @@ public class PlagiarismDetectorConnection {
         return jsonResponse;
     }
 
-    public static JSONObject getResultsOverview (String checkId) throws Exception {
+    public static JSONObject getResultsOverview(String checkId) throws Exception {
 
         //Building the url
         HttpUrl url = HttpUrl.parse(apiEndpoint).newBuilder()
@@ -141,13 +158,4 @@ public class PlagiarismDetectorConnection {
         return jsonResponse;
     }
 
-
-    //TODO remove this main method
-    public static void main(String[] argv) throws Exception {
-
-        System.out.println(crateCheck("new").toJSONString());
-        //System.out.println(uploadFile(file, "75693"));
-        //System.out.println(startCheck( "75693"));
-        //System.out.println(getResultsOverview( "75693"));
-    }
 }

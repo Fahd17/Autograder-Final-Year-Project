@@ -30,6 +30,8 @@ public class Assignment {
 
     private LocalDateTime deadline;
 
+    private String plagiarismCheckId;
+
     @Column(nullable = true)
     private byte[] assignmentResultsCSV;
 
@@ -152,5 +154,23 @@ public class Assignment {
      */
     public void setAssignmentResultsCSV(byte[] assignmentResultsCSV) {
         this.assignmentResultsCSV = assignmentResultsCSV;
+    }
+
+    /**
+     * A method to get the check id for the plagiarism check
+     *
+     * @return The check id of the assignment
+     */
+    public String getPlagiarismCheckId() {
+        return plagiarismCheckId;
+    }
+
+    /**
+     * A method to set the check id for the plagiarism check
+     *
+     * @param plagiarismCheckId The id of the check
+     */
+    public void setPlagiarismCheckId(String plagiarismCheckId) {
+        this.plagiarismCheckId = plagiarismCheckId;
     }
 }
