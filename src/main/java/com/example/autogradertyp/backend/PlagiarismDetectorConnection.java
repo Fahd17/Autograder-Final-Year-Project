@@ -50,9 +50,7 @@ public class PlagiarismDetectorConnection {
 
         String jsonString  = response.body().string();
         JSONParser parser = new JSONParser();
-        System.out.println(jsonString);
         JSONObject jsonResponse = (JSONObject) parser.parse(jsonString);
-        System.out.println(jsonResponse.toJSONString());
         return jsonResponse;
     }
 
