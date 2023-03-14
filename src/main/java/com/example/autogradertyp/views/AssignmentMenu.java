@@ -25,7 +25,7 @@ import java.util.List;
  */
 
 @RolesAllowed({"ROLE_ADMIN"})
-@Route("assignments")
+@Route(value = "assignments", layout = MainLayout.class)
 public class AssignmentMenu extends VerticalLayout {
 
 

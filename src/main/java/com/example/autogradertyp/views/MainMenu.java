@@ -24,25 +24,12 @@ import javax.annotation.security.PermitAll;
 @Route("main-menu")
 public class MainMenu extends VerticalLayout {
 
-    private final SecurityService securityService;
-
     /**
      * Creates the UI of the page
      *
-     * @param securityService To access teh user table in the database
      */
-    public MainMenu(SecurityService securityService) {
-        this.securityService = securityService;
-        createHeader();
+    public MainMenu() {
         createBody();
-
-    }
-
-    private void createHeader() {
-        Button logout = new Button("Log out", e -> securityService.logout());
-        HorizontalLayout header = new HorizontalLayout(logout);
-        header.setAlignItems(Alignment.END);
-        add(header);
 
     }
 
