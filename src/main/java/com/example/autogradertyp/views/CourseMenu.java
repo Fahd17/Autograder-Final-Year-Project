@@ -23,7 +23,7 @@ public class CourseMenu extends VerticalLayout {
 
         List<Course> courses = courseService.getAllCourses();
         add(new H1("Select course:"));
-        HorizontalLayout assignmentsOptions = new HorizontalLayout();
+        HorizontalLayout courcesOptions = new HorizontalLayout();
 
 
         if (courses != null) {
@@ -46,10 +46,10 @@ public class CourseMenu extends VerticalLayout {
 
                     courseChoice.setHeight(30, Unit.MM);
                     courseChoice.setWidth(60, Unit.MM);
-                    assignmentsOptions.add(courseChoice);
+                    courcesOptions.add(courseChoice);
 
                 }
-                add(assignmentsOptions);
+                add(courcesOptions);
 
 
             }

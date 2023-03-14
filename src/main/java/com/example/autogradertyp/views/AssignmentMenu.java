@@ -8,6 +8,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
@@ -37,6 +38,10 @@ public class AssignmentMenu extends VerticalLayout {
 
         List<Assignment> assignments = assignmentService.getAllAssignments();
         add(new H1("Select assignment:"));
+
+        //TODO choose one of them
+        //FlexLayout assignmentsOptions = new FlexLayout();
+        //assignmentsOptions.setFlexWrap(FlexLayout.FlexWrap.WRAP);
         HorizontalLayout assignmentsOptions = new HorizontalLayout();
 
         if (assignments != null) {
@@ -56,7 +61,6 @@ public class AssignmentMenu extends VerticalLayout {
 
                             assignmentChoice.getUI().ifPresent(ui -> ui.navigate(AssignmentView.class,
                                     new RouteParameters("assignment-ID", String.valueOf(assignment.getId())))));
-
                     assignmentChoice.setHeight(30, Unit.MM);
                     assignmentChoice.setWidth(60, Unit.MM);
                     assignmentsOptions.add(assignmentChoice);
