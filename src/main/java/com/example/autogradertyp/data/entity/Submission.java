@@ -36,6 +36,8 @@ public class Submission {
 
     private int attemptNumber;
 
+    private String checkUploadId;
+
     @ManyToOne
     @JoinColumn(name = "assignment_id", nullable = false)
     private Assignment assignment;
@@ -197,5 +199,23 @@ public class Submission {
         String[] record = {user.getStudentNumber(), getMarks() + "", totalMarks + "", user.getEmail()};
 
         return record;
+    }
+
+    /**
+     * Gets the check upload id
+     *
+     * @return The check upload id
+     */
+    public String getCheckUploadId() {
+        return checkUploadId;
+    }
+
+    /**
+     * Sets the check upload id
+     *
+     * @param checkUploadId the check upload id
+     */
+    public void setCheckUploadId(String checkUploadId) {
+        this.checkUploadId = checkUploadId;
     }
 }

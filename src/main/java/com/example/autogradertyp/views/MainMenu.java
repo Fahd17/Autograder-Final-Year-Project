@@ -45,10 +45,10 @@ public class MainMenu extends VerticalLayout {
         bodyLayout.setAlignItems(FlexComponent.Alignment.CENTER);
 
 
-        Button createAssignmentButton = new Button("Create an assignment");
+        Button createAssignmentButton = new Button("Manage courses");
         createAssignmentButton.addClickListener(e ->
 
-                createAssignmentButton.getUI().ifPresent(ui -> ui.navigate(CreateAssignmentView.class)));
+                createAssignmentButton.getUI().ifPresent(ui -> ui.navigate(CourseMenu.class)));
 
         createAssignmentButton.setHeight(35, Unit.MM);
         createAssignmentButton.setWidth(70, Unit.MM);

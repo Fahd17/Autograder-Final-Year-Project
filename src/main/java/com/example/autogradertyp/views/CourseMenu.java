@@ -57,19 +57,25 @@ public class CourseMenu extends VerticalLayout {
 
 
         HorizontalLayout bottomRow = new HorizontalLayout();
-        Button newCourse = new Button("Create new course:");
-
+        Button newCourse = new Button("Create new course");
+        Button newAssignment = new Button("Create new assignment");
         Button goBackButton = new Button("Back");
         bottomRow.add(goBackButton);
-        add(newCourse, bottomRow);
+        add(newCourse,newAssignment, bottomRow);
 
         newCourse.addClickListener(e -> newCourse.getUI().ifPresent(ui -> ui.navigate(CreateCourseView.class))
 
         );
 
+        newAssignment.addClickListener(e ->
+
+                goBackButton.getUI().ifPresent(ui -> ui.navigate(CreateAssignmentView.class))
+        );
+
         goBackButton.addClickListener(e ->
 
-                goBackButton.getUI().ifPresent(ui -> ui.navigate(MainMenu.class)));
+                goBackButton.getUI().ifPresent(ui -> ui.navigate(MainMenu.class))
+        );
 
     }
 

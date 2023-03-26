@@ -158,4 +158,14 @@ public class SubmissionService {
 
         return getStudentSubmissionsForAssignment(assignment, user).size() + 1;
     }
+
+    /**
+     * A method to update a submission
+     *
+     * @param submission The submission to be updated
+     */
+    public void updateSubmission(Submission submission) {
+
+        repository.save(submission);
+    }
 }

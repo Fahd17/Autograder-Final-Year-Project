@@ -1,5 +1,6 @@
 package com.example.autogradertyp.views;
 
+import com.example.autogradertyp.backend.PlagiarismDetectorConnection;
 import com.example.autogradertyp.backend.RestrictedEnvironmentConnection;
 import com.example.autogradertyp.data.entity.Assignment;
 import com.example.autogradertyp.data.entity.Submission;
@@ -18,6 +19,7 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteParameters;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -186,4 +188,23 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
 
         return ous.toByteArray();
     }
+
+    public void uploadFiles (ArrayList<Submission> submissions) {
+
+        for (Submission submission: submissions) {
+
+            try {
+                JSONObject respose = PlagiarismDetectorConnection.uploadFile(submission.getId() + "file",
+                        submission.getData(), submission.getAssignment().getPlagiarismCheckId());
+
+                String checkUploadId = respose.get("id")+ "";
+                submission.setCheckUploadId(checkUploadId);
+                submissionService.updateSubmission(submission);
+
+            } catch (Exception e){
+
+            }
+        }
+    }
+
 }
