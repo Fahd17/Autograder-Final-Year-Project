@@ -38,11 +38,10 @@ public class AssignmentMenu extends VerticalLayout {
 
         List<Assignment> assignments = assignmentService.getAllAssignments();
         add(new H1("Select assignment:"));
-
-        //TODO choose one of them
-        //FlexLayout assignmentsOptions = new FlexLayout();
-        //assignmentsOptions.setFlexWrap(FlexLayout.FlexWrap.WRAP);
-        HorizontalLayout assignmentsOptions = new HorizontalLayout();
+        
+        FlexLayout assignmentsOptions = new FlexLayout();
+        assignmentsOptions.setFlexWrap(FlexLayout.FlexWrap.WRAP);
+        assignmentsOptions.setJustifyContentMode(JustifyContentMode.BETWEEN);
 
         if (assignments != null) {
 
