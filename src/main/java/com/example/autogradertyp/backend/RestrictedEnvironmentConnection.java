@@ -38,24 +38,20 @@ public class RestrictedEnvironmentConnection {
                 .connectTimeout(180, TimeUnit.SECONDS)
                 .build();
 
-        // A request body to append file
+
         RequestBody fileBody = RequestBody.create(okhttp3.MediaType.parse(file.getContentType()), file.getBytes());
 
         MultipartBody multipartBody = new MultipartBody.Builder()
-                .setType(MultipartBody.FORM)  // Header to show we are sending a Multipart Form Data
-                .addFormDataPart("file", file.getOriginalFilename(),fileBody) // file param
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("file", file.getOriginalFilename(),fileBody)
                 .build();
 
         Request request = new Request.Builder()
-                .url(apiEndpoint)  // pass the url endpoint of api
-                .post(multipartBody) // pass the mulipart object we just created having data
+                .url(apiEndpoint)
+                .post(multipartBody)
                 .build();
 
-        Response resp = okHttpClient.newCall(request).execute();
-
-        String response = resp.body().string();
-
-        System.out.println(response);
+        Response respone = okHttpClient.newCall(request).execute();
     }
 
     /**
@@ -69,7 +65,7 @@ public class RestrictedEnvironmentConnection {
      */
     public boolean gradeATestCase (String mainFileName, String testCaseInput, String testCaseOutput) throws IOException {
 
-        //Building the url
+        
         HttpUrl url = HttpUrl.parse(apiEndpoint).newBuilder()
                 .addPathSegments("grade")
                 .addQueryParameter("name", mainFileName)
@@ -83,7 +79,7 @@ public class RestrictedEnvironmentConnection {
                 .build();
 
         Request request = new Request.Builder()
-                .url(url)  // pass the url endpoint of api
+                .url(url)
                 .get()
                 .build();
 

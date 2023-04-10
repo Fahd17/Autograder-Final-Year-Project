@@ -56,7 +56,7 @@ public class CanvasIntegrator {
     /**
      * A method that upload the grades of a group of students
      *
-     * @param submissions The submission of the students to be uploaded
+     * @param submissions The submissions of the students to be uploaded
      */
     public static void uploadStudentsGrade (ArrayList<Submission> submissions){
 
