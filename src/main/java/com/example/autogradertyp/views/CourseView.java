@@ -1,47 +1,39 @@
 package com.example.autogradertyp.views;
 
+import com.example.autogradertyp.backend.CanvasIntegrator;
+import com.example.autogradertyp.backend.PlagiarismDetectorConnection;
 import com.example.autogradertyp.data.entity.Assignment;
 import com.example.autogradertyp.data.entity.Course;
 import com.example.autogradertyp.data.entity.Submission;
-import com.example.autogradertyp.data.entity.User;
 import com.example.autogradertyp.data.service.AssignmentService;
 import com.example.autogradertyp.data.service.CourseService;
 import com.example.autogradertyp.data.service.SubmissionService;
 import com.github.appreciated.card.Card;
 import com.github.appreciated.card.action.ActionButton;
 import com.github.appreciated.card.action.Actions;
-import com.github.appreciated.card.content.IconItem;
-import com.github.appreciated.card.label.PrimaryLabel;
 import com.github.appreciated.card.label.SecondaryLabel;
 import com.github.appreciated.card.label.TitleLabel;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.applayout.AppLayout;
-import com.vaadin.flow.component.applayout.DrawerToggle;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Anchor;
-import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.tabs.Tab;
-import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteParameters;
 import com.vaadin.flow.server.StreamResource;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.annotation.security.RolesAllowed;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 
 @RolesAllowed({"ROLE_ADMIN"})
-@Route("course/:course-ID?")
+@Route(value = "course/:course-ID?", layout = MainLayout.class)
 public class CourseView extends AppLayout implements BeforeEnterObserver {
 
 
@@ -54,70 +46,91 @@ public class CourseView extends AppLayout implements BeforeEnterObserver {
     @Autowired
     private CourseService courseService;
 
+    @Autowired
+    private SubmissionService submissionService;
 
-    public CourseView(SubmissionService x) {
-
-        HorizontalLayout fahd = new HorizontalLayout();
-        List<Submission> y = x.getAllSubmissions();
+    public CourseView(AssignmentService assignmentService) {
 
 
-        Button filenameTextField = new Button();
-        Card card = new Card(
-                // if you don't want the title to wrap you can set the whitespace = nowrap
-                new TitleLabel("Example Title").withWhiteSpaceNoWrap(),
-                new PrimaryLabel("Some primary text"),
-                new SecondaryLabel("Some secondary text"),
-                new Actions(
-                        new ActionButton("Action 1", event -> {System.out.println("xxx");})
-                )
-                );
-        Anchor anchor = new Anchor(getStreamResource("default.txt", "default content".getBytes()), "click me to download");
-        anchor.getElement().setAttribute("download", true);
-fahd.add(card);
-
-        filenameTextField.addClickListener(e -> {
-            anchor.setHref(new StreamResource("default.txt",
-                    () -> new ByteArrayInputStream(y.get(1).getData())));
-        });
-
-        DrawerToggle toggle = new DrawerToggle();
-
-        H1 title = new H1("MyApp");
-        title.getStyle().set("font-size", "var(--lumo-font-size-l)")
-                .set("margin", "0");
-
-        Tab analytics = new Tab("Analytics");
-        Tab analyticsq = new Tab("Analytics");
-        Tab analytics1 = new Tab("Analytics1");
-
-        VerticalLayout f = new VerticalLayout();
-               Button x1 = new Button("hhhhhh");
-               x1.setWidth(240, Unit.PIXELS);
-        Button x2 = new Button("hhhhhh");Button x3 = new Button("hhhhhh");
-
-               x1.addClickListener(e-> no());
-Tabs tabs = new Tabs(analytics, analyticsq, analytics1);
-
-        tabs.setOrientation(Tabs.Orientation.VERTICAL);
-        tabs.setHeight("240px");
-        tabs.setWidth("240px");
-        f.add(x1, x2, x3);
-        addToDrawer( f);
-        addToNavbar(toggle, title);
-
-        fahd.add(filenameTextField, anchor);
-        setContent(fahd);
     }
 
-    private void no(){
-        System.out.println("FFFFFF");
+    private void showAssignmentsCards() {
+        ArrayList<Assignment> assignments = assignmentService.getAssignmentsForCourse(targetCourse);
+        HorizontalLayout cardsLayout = new HorizontalLayout();
+
+
+        for (Assignment assignment : assignments) {
+
+            VerticalLayout assignmentView = new VerticalLayout();
+            Card assignmnetCard = new Card(
+                    new TitleLabel(assignment.getAssignmentName()).withWhiteSpaceNoWrap(),
+                    new SecondaryLabel("Number of total submissions: " + submissionService.getSubmissionsForAssignment(assignment).size()),
+                    new Actions(
+                            new ActionButton("Publish grades on Canvas", event -> {
+                                CanvasIntegrator.uploadStudentsGrade(submissionService.getFinalSubmissions(assignment));
+                            }),
+                            new ActionButton("Generate plagiarism report", event -> {
+                                try {
+                                    cardsLayout.getUI().ifPresent(ui -> ui.navigate(PlagiarismReportView.class,
+                                            new RouteParameters("assignment-ID", String.valueOf(assignment.getId()))));
+
+                                    uploadFiles(submissionService.getFinalSubmissions(assignment));
+                                    PlagiarismDetectorConnection.startCheck(assignment.getPlagiarismCheckId());
+
+
+                                } catch (Exception e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }), new ActionButton("Show plagiarism report", event -> {
+
+                    })
+                    )
+            );
+
+            assignmnetCard.setWidth(70, Unit.MM);
+            Anchor anchor = new Anchor(getStreamResource(assignment.getAssignmentName() + ".csv",
+                    assignment.getAssignmentResultsCSV()), "Download performance report");
+            anchor.getElement().setAttribute("download", true);
+
+            assignmentView.add(assignmnetCard, anchor);
+
+            cardsLayout.add(
+                    assignmentView
+            );
+
+        }
+
+        setContent(cardsLayout);
+
     }
 
-    public StreamResource getStreamResource(String filename, byte[] content) {
+    private StreamResource getStreamResource(String filename, byte[] content) {
         return new StreamResource(filename,
                 () -> new ByteArrayInputStream(content));
     }
 
+    /**
+     * A method to upload group of submissions to the plagiarism check
+     *
+     * @param submissions The submissions to  eb uploaded
+     */
+    private void uploadFiles(ArrayList<Submission> submissions) {
+
+        for (Submission submission : submissions) {
+
+            try {
+                JSONObject respose = PlagiarismDetectorConnection.uploadFile(submission.getId() + "file",
+                        submission.getData(), submission.getAssignment().getPlagiarismCheckId());
+
+                String checkUploadId = respose.get("id") + "";
+                submission.setCheckUploadId(checkUploadId);
+                submissionService.updateSubmission(submission);
+
+            } catch (Exception e) {
+
+            }
+        }
+    }
 
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
@@ -125,6 +138,8 @@ Tabs tabs = new Tabs(analytics, analyticsq, analytics1);
         Optional<String> courseID = beforeEnterEvent.getRouteParameters().get("course-ID");
 
         this.targetCourse = courseService.getCourseById(Long.valueOf(courseID.get()));
+
+        showAssignmentsCards();
 
     }
 

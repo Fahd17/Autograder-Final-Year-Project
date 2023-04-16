@@ -189,22 +189,4 @@ public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterO
         return ous.toByteArray();
     }
 
-    public void uploadFiles (ArrayList<Submission> submissions) {
-
-        for (Submission submission: submissions) {
-
-            try {
-                JSONObject respose = PlagiarismDetectorConnection.uploadFile(submission.getId() + "file",
-                        submission.getData(), submission.getAssignment().getPlagiarismCheckId());
-
-                String checkUploadId = respose.get("id")+ "";
-                submission.setCheckUploadId(checkUploadId);
-                submissionService.updateSubmission(submission);
-
-            } catch (Exception e){
-
-            }
-        }
-    }
-
 }

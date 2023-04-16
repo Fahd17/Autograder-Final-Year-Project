@@ -10,6 +10,7 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteParameters;
 
 import javax.annotation.security.RolesAllowed;
 import java.util.List;
@@ -42,7 +43,8 @@ public class CourseMenu extends VerticalLayout {
 
                     courseChoice.addClickListener(e ->
 
-                            courseChoice.getUI().ifPresent(ui -> ui.navigate(MainMenu.class)));
+                            courseChoice.getUI().ifPresent(ui -> ui.navigate(CourseView.class,
+                                    new RouteParameters("course-ID", String.valueOf(course.getId())))));
 
                     courseChoice.setHeight(30, Unit.MM);
                     courseChoice.setWidth(60, Unit.MM);
