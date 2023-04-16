@@ -168,4 +168,21 @@ public class SubmissionService {
 
         repository.save(submission);
     }
+
+    public Submission getSubmissionByCheckUploadId (Assignment assignment, String checkUploadId) {
+
+        Submission submission = null;
+        List<Submission> allSubmissions = getFinalSubmissions(assignment);
+
+        //going over all submissions
+        for (int i = 0; i < allSubmissions.size(); i++) {
+
+            if (allSubmissions.get(i).getCheckUploadId().equals(checkUploadId)) {
+
+                submission = allSubmissions.get(i);
+            }
+        }
+
+        return submission;
+    }
 }

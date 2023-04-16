@@ -23,7 +23,9 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteParameters;
 import com.vaadin.flow.server.StreamResource;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.RolesAllowed;
@@ -62,41 +64,36 @@ public class CourseView extends AppLayout implements BeforeEnterObserver {
         for (Assignment assignment : assignments) {
 
             VerticalLayout assignmentView = new VerticalLayout();
-            Card assignmnetCard = new Card(
-                    new TitleLabel(assignment.getAssignmentName()).withWhiteSpaceNoWrap(),
-                    new SecondaryLabel("Number of total submissions: " + submissionService.getSubmissionsForAssignment(assignment).size()),
-                    new Actions(
-                            new ActionButton("Publish grades on Canvas", event -> {
-                                CanvasIntegrator.uploadStudentsGrade(submissionService.getFinalSubmissions(assignment));
-                            }),
-                            new ActionButton("Generate plagiarism report", event -> {
-                                try {
-                                    cardsLayout.getUI().ifPresent(ui -> ui.navigate(PlagiarismReportView.class,
-                                            new RouteParameters("assignment-ID", String.valueOf(assignment.getId()))));
+            Card assignmnetCard = new Card(new TitleLabel(assignment.getAssignmentName()).withWhiteSpaceNoWrap(), new SecondaryLabel("Number of total submissions: " + submissionService.getSubmissionsForAssignment(assignment).size()), new Actions(new ActionButton("Publish grades on Canvas", event -> {
+                CanvasIntegrator.uploadStudentsGrade(submissionService.getFinalSubmissions(assignment));
+            }), new ActionButton("Upload submission files", event -> {
+                try {
 
-                                    uploadFiles(submissionService.getFinalSubmissions(assignment));
-                                    PlagiarismDetectorConnection.startCheck(assignment.getPlagiarismCheckId());
+                    uploadFiles(submissionService.getFinalSubmissions(assignment));
 
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }), new ActionButton("Start check", event -> {
 
-                                } catch (Exception e) {
-                                    throw new RuntimeException(e);
-                                }
-                            }), new ActionButton("Show plagiarism report", event -> {
+                try {
+                    PlagiarismDetectorConnection.startCheck(assignment.getPlagiarismCheckId());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }), new ActionButton("Show plagiarism report", event -> {
 
-                    })
-                    )
-            );
+                cardsLayout.getUI().ifPresent(ui -> ui.navigate(PlagiarismReportView.class, new RouteParameters("assignment-ID", String.valueOf(assignment.getId()))));
+
+            })));
 
             assignmnetCard.setWidth(70, Unit.MM);
-            Anchor anchor = new Anchor(getStreamResource(assignment.getAssignmentName() + ".csv",
-                    assignment.getAssignmentResultsCSV()), "Download performance report");
+            Anchor anchor = new Anchor(getStreamResource(assignment.getAssignmentName() + ".csv", assignment.getAssignmentResultsCSV()), "Download performance report");
             anchor.getElement().setAttribute("download", true);
 
             assignmentView.add(assignmnetCard, anchor);
 
-            cardsLayout.add(
-                    assignmentView
-            );
+            cardsLayout.add(assignmentView);
 
         }
 
@@ -105,8 +102,7 @@ public class CourseView extends AppLayout implements BeforeEnterObserver {
     }
 
     private StreamResource getStreamResource(String filename, byte[] content) {
-        return new StreamResource(filename,
-                () -> new ByteArrayInputStream(content));
+        return new StreamResource(filename, () -> new ByteArrayInputStream(content));
     }
 
     /**
@@ -122,7 +118,12 @@ public class CourseView extends AppLayout implements BeforeEnterObserver {
                 JSONObject respose = PlagiarismDetectorConnection.uploadFile(submission.getId() + "file",
                         submission.getData(), submission.getAssignment().getPlagiarismCheckId());
 
-                String checkUploadId = respose.get("id") + "";
+                JSONArray dataArray = (JSONArray) respose.get("data");
+
+                JSONObject dataObject = (JSONObject) dataArray.get(0);
+
+                System.out.println(respose.toJSONString());
+                String checkUploadId = dataObject.get("id") + "";
                 submission.setCheckUploadId(checkUploadId);
                 submissionService.updateSubmission(submission);
 

@@ -24,7 +24,6 @@ public class MainLayout extends AppLayout {
     public MainLayout(SecurityService securityService) {
         this.securityService = securityService;
         createHeader();
-        createDrawer();
 
     }
 
@@ -41,15 +40,6 @@ public class MainLayout extends AppLayout {
         header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
         header.setWidthFull();
         addToNavbar(header);
-
-    }
-
-    private void createDrawer() {
-
-        RouterLink assignmentView = new RouterLink("assignments", AssignmentMenu.class);
-        assignmentView.setHighlightCondition(HighlightConditions.sameLocation());
-
-        addToDrawer(new VerticalLayout(assignmentView));
 
     }
 

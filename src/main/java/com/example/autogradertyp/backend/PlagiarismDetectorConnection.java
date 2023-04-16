@@ -7,6 +7,7 @@ import org.json.simple.parser.JSONParser;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
@@ -15,7 +16,7 @@ import java.util.zip.ZipOutputStream;
 public class PlagiarismDetectorConnection {
 
     private static String apiEndpoint = "https://codequiry.com/api/v1/";
-    private static String apiKey = "5796c39f4698e097692974916cc02c2691e7118030ddf35f78e5d7c5426a7bdf";
+    private static String apiKey = "f566d804d37ef4b8eb90c572933f1266099746525490f073ed1e115e0d679fec";
 
     public static OkHttpClient getOkHttpClientInstance() {
 
@@ -57,7 +58,7 @@ public class PlagiarismDetectorConnection {
 
     public static JSONObject uploadFile(String filename, byte[] input, String checkId) throws Exception {
 
-        String FILEPATH = ".\\submissions_directory\\" + filename + ".zip";
+        String FILEPATH = ".\\submissions_directory1\\" + filename + ".zip";
         File file = new File(FILEPATH);
 
         try {
@@ -70,6 +71,10 @@ public class PlagiarismDetectorConnection {
             zos.write(input);
             zos.closeEntry();
             zos.close();
+
+            FileOutputStream fos = new FileOutputStream(FILEPATH);
+            fos.write(baos.toByteArray());
+            fos.close();
         } catch (Exception e) {
             System.out.println("Exception: " + e);
         }

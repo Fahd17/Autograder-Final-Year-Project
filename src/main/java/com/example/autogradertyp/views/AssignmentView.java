@@ -92,7 +92,8 @@ public class AssignmentView extends VerticalLayout implements BeforeEnterObserve
 
             Submission keptSubmission = submissionService.getUserCurrentSubmission(submissions);
 
-            add(new H1(keptSubmission.getMarks() + " out of " + keptSubmission.getTotalMarks() + " submitted at " + keptSubmission.getSubmissionDataTimeFormatted()));
+            add(new H1(keptSubmission.getMarks() + " out of " + keptSubmission.getTotalMarks()
+                    + " submitted at " + keptSubmission.getSubmissionDataTimeFormatted()));
         } else {
 
             add(new H1("No submissions available for this assignment."));
@@ -108,7 +109,8 @@ public class AssignmentView extends VerticalLayout implements BeforeEnterObserve
         newSubmission.setHeight(40, Unit.MM);
         newSubmission.addClickListener(e ->
 
-                newSubmission.getUI().ifPresent(ui -> ui.navigate(SubmitAssignmentView.class, new RouteParameters("assignment-ID", String.valueOf(targetAssignment.getId())))));
+                newSubmission.getUI().ifPresent(ui -> ui.navigate(SubmitAssignmentView.class, new RouteParameters(
+                        "assignment-ID", String.valueOf(targetAssignment.getId())))));
 
         add(newSubmission);
     }
