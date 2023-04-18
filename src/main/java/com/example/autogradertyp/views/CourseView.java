@@ -15,7 +15,9 @@ import com.github.appreciated.card.label.SecondaryLabel;
 import com.github.appreciated.card.label.TitleLabel;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.applayout.AppLayout;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEnterEvent;
@@ -36,7 +38,7 @@ import java.util.Optional;
 
 @RolesAllowed({"ROLE_ADMIN"})
 @Route(value = "course/:course-ID?", layout = MainLayout.class)
-public class CourseView extends AppLayout implements BeforeEnterObserver {
+public class CourseView extends VerticalLayout implements BeforeEnterObserver {
 
 
     private Course targetCourse;
@@ -58,46 +60,45 @@ public class CourseView extends AppLayout implements BeforeEnterObserver {
 
     private void showAssignmentsCards() {
         ArrayList<Assignment> assignments = assignmentService.getAssignmentsForCourse(targetCourse);
+
         HorizontalLayout cardsLayout = new HorizontalLayout();
 
 
         for (Assignment assignment : assignments) {
 
             VerticalLayout assignmentView = new VerticalLayout();
-            Card assignmnetCard = new Card(new TitleLabel(assignment.getAssignmentName()).withWhiteSpaceNoWrap(), new SecondaryLabel("Number of total submissions: " + submissionService.getSubmissionsForAssignment(assignment).size()), new Actions(new ActionButton("Publish grades on Canvas", event -> {
+            assignmentView.setWidth(70, Unit.MM);
+            Card assignmentCard = new Card(new TitleLabel(assignment.getAssignmentName()).withWhiteSpaceNoWrap(),
+                    new SecondaryLabel("Number of total submissions: " + submissionService.getSubmissionsForAssignment(assignment).size()),
+                    new Actions(new ActionButton("Publish grades on Canvas", event -> {
                 CanvasIntegrator.uploadStudentsGrade(submissionService.getFinalSubmissions(assignment));
-            }), new ActionButton("Upload submission files", event -> {
+            }), new ActionButton("Generate plagiarism report", event -> {
                 try {
 
                     uploadFiles(submissionService.getFinalSubmissions(assignment));
-
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }), new ActionButton("Start check", event -> {
-
-                try {
                     PlagiarismDetectorConnection.startCheck(assignment.getPlagiarismCheckId());
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             }), new ActionButton("Show plagiarism report", event -> {
 
-                cardsLayout.getUI().ifPresent(ui -> ui.navigate(PlagiarismReportView.class, new RouteParameters("assignment-ID", String.valueOf(assignment.getId()))));
+                cardsLayout.getUI().ifPresent(ui -> ui.navigate(PlagiarismReportView.class, new RouteParameters("assignment-ID",
+                        String.valueOf(assignment.getId()))));
 
             })));
 
-            assignmnetCard.setWidth(70, Unit.MM);
-            Anchor anchor = new Anchor(getStreamResource(assignment.getAssignmentName() + ".csv", assignment.getAssignmentResultsCSV()), "Download performance report");
+            assignmentCard.setWidth(70, Unit.MM);
+            Anchor anchor = new Anchor(getStreamResource(assignment.getAssignmentName() + ".csv",
+                    assignment.getAssignmentResultsCSV()), "Download performance report");
             anchor.getElement().setAttribute("download", true);
 
-            assignmentView.add(assignmnetCard, anchor);
+            assignmentView.add(assignmentCard, anchor);
 
             cardsLayout.add(assignmentView);
 
         }
 
-        setContent(cardsLayout);
+        add(cardsLayout);
 
     }
 
@@ -141,7 +142,24 @@ public class CourseView extends AppLayout implements BeforeEnterObserver {
         this.targetCourse = courseService.getCourseById(Long.valueOf(courseID.get()));
 
         showAssignmentsCards();
+        addBackButton();
 
+    }
+
+    private void addBackButton(){
+
+        VerticalLayout bottomRow = new VerticalLayout();
+
+        bottomRow.setAlignItems(FlexComponent.Alignment.END);
+
+        Button goBackButton = new Button("Back");
+        bottomRow.add(goBackButton);
+        add(bottomRow);
+
+        goBackButton.addClickListener(e ->
+
+                goBackButton.getUI().ifPresent(ui -> ui.navigate(CourseMenu.class))
+        );
     }
 
 }

@@ -35,7 +35,7 @@ import java.util.Optional;
  */
 
 @PermitAll
-@Route("assignment/:assignment-ID?")
+@Route(value = "assignment/:assignment-ID?", layout = MainLayout.class)
 public class AssignmentView extends VerticalLayout implements BeforeEnterObserver {
 
     private Assignment targetAssignment;

@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.security.RolesAllowed;
 
 @RolesAllowed({"ROLE_ADMIN"})
-@Route("create-course")
+@Route(value = "create-course", layout = MainLayout.class)
 public class CreateCourseView extends VerticalLayout {
 
     @Autowired

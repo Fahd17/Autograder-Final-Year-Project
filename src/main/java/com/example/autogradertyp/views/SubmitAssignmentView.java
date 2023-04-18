@@ -42,7 +42,7 @@ import java.util.Optional;
  * @since 01/02/2023
  */
 @PermitAll
-@Route("submit-assignment/:assignment-ID?")
+@Route(value = "submit-assignment/:assignment-ID?", layout = MainLayout.class)
 public class SubmitAssignmentView extends VerticalLayout implements BeforeEnterObserver {
 
     @Autowired

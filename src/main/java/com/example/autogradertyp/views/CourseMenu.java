@@ -17,7 +17,7 @@ import java.util.List;
 
 
 @RolesAllowed({"ROLE_ADMIN"})
-@Route("courses")
+@Route(value = "courses", layout = MainLayout.class)
 public class CourseMenu extends VerticalLayout {
 
     public CourseMenu(CourseService courseService) {

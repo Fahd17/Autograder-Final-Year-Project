@@ -2,8 +2,10 @@ package com.example.autogradertyp.views;
 
 
 import com.example.autogradertyp.backend.PlagiarismDetectorConnection;
+import com.example.autogradertyp.backend.PlagiarismInstance;
 import com.example.autogradertyp.data.entity.Assignment;
 import com.example.autogradertyp.data.entity.Submission;
+import com.example.autogradertyp.data.entity.User;
 import com.example.autogradertyp.data.service.AssignmentService;
 import com.example.autogradertyp.data.service.SubmissionService;
 import com.vaadin.flow.component.button.Button;
@@ -13,6 +15,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteParameters;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.security.PermitAll;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Stack;
 
 @PermitAll
 @Route(value = "plagiarism/:assignment-ID?",  layout = MainLayout.class)
@@ -41,7 +45,7 @@ public class PlagiarismReportView extends VerticalLayout implements BeforeEnterO
 
         targetAssignment = assignmentService.getAssigmentById(Long.valueOf(assignmentID.get()));
 
-        add(new Button("",event -> {showPlagiarismResults();}));
+        showPlagiarismResults();
 
     }
 
@@ -55,37 +59,69 @@ public class PlagiarismReportView extends VerticalLayout implements BeforeEnterO
         }
         System.out.println(response.toJSONString());
 
-        createPlagiarismArray(submissionService, response);
+        if (response.get("error") != null) {
+            add(new H1(response.get("error").toString()));
+        } else {
 
-        System.out.println(response.toJSONString());
+            ArrayList<PlagiarismInstance> plagiarismArray = createPlagiarismArray(submissionService, response);
 
-        add(new H1("Past attempts:"));
+            System.out.println(response.toJSONString());
 
-        Grid<Submission> historyGrid = new Grid<>(Submission.class, false);
-        historyGrid.addColumn(Submission::getAttemptNumber).setHeader("User name");
-        historyGrid.addColumn(Submission::getMarks).setHeader("Student number");
-        historyGrid.addColumn(Submission::getTotalMarks).setHeader("Plagiarism percentage");
-        historyGrid.addColumn(Submission::getTotalMarks).setHeader("Number of matches");
-        historyGrid.addColumn(Submission::getSubmissionDataTimeFormatted).setHeader("Submission time");
+            add(new H1("Plagiarism results:"));
+
+            Grid<PlagiarismInstance> historyGrid = new Grid<>(PlagiarismInstance.class, false);
+            historyGrid.addColumn(PlagiarismInstance::getUserName).setHeader("User name");
+            historyGrid.addColumn(PlagiarismInstance::getStudentNumber).setHeader("Student number");
+            historyGrid.addColumn(PlagiarismInstance::getPlagiarismResult).setHeader("Plagiarism percentage");
+            historyGrid.addColumn(PlagiarismInstance::getNumberOfPlagiarismMatches).setHeader("Number of matches found");
 
 
-        //historyGrid.add
-        historyGrid.setAllRowsVisible(true);
-        add(historyGrid);
+            //historyGrid.add
+            historyGrid.setAllRowsVisible(true);
+            historyGrid.setItems(plagiarismArray);
+            add(historyGrid);
+        }
+
+        addBackButton();
     }
 
-    private ArrayList<String []> createPlagiarismArray (SubmissionService submissionService, JSONObject response) {
+    private ArrayList<PlagiarismInstance> createPlagiarismArray (SubmissionService submissionService, JSONObject response) {
 
-        ArrayList<String []> plagiarismArray = new ArrayList<>();
+        ArrayList<PlagiarismInstance> plagiarismArray = new ArrayList<>();
         JSONArray dataArray = (JSONArray) response.get("submissions");
 
         for (Object submissionResult: dataArray){
 
             JSONObject jsonObject = (JSONObject) submissionResult;
-            Long x = (Long)  jsonObject.get("id");
-            Submission submission = submissionService.getSubmissionByCheckUploadId(targetAssignment, String.valueOf(x));
-            System.out.println(submission.getMarks());
+            Long id = (Long)  jsonObject.get("id");
+
+            String plagiarismResult = (String) jsonObject.get("result1");
+            Long numberOfMatches = (Long)  jsonObject.get("matches_local");
+
+            Submission submission = submissionService.getSubmissionByCheckUploadId(targetAssignment, String.valueOf(id));
+            if (submission != null) {
+                User user = submission.getUser();
+                plagiarismArray.add(new PlagiarismInstance(user.getUsername(), user.getStudentNumber(),
+                        plagiarismResult, numberOfMatches));
+            }
         }
-        return null;
+        return plagiarismArray;
+    }
+
+    private void addBackButton(){
+
+        VerticalLayout bottomRow = new VerticalLayout();
+
+        bottomRow.setAlignItems(Alignment.END);
+
+        Button goBackButton = new Button("Back");
+        bottomRow.add(goBackButton);
+        add(bottomRow);
+
+        goBackButton.addClickListener(e ->
+
+                goBackButton.getUI().ifPresent(ui -> ui.navigate(CourseView.class,
+                        new RouteParameters("course-ID", String.valueOf(targetAssignment.getCourse().getId()))))
+        );
     }
 }

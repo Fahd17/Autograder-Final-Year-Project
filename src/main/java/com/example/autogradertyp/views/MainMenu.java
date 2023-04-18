@@ -21,7 +21,7 @@ import javax.annotation.security.PermitAll;
  */
 
 @PermitAll
-@Route("main-menu")
+@Route(value = "main-menu", layout = MainLayout.class)
 public class MainMenu extends VerticalLayout {
 
     /**

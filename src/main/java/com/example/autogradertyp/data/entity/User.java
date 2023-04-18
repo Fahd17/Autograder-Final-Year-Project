@@ -105,7 +105,7 @@ public class User implements UserDetails {
     }
 
     /**
-     * A method to get the username od the user
+     * A method to get the username of the user
      *
      * @return The username of the user
      */

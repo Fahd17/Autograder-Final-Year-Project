@@ -47,7 +47,7 @@ import static com.example.autogradertyp.backend.TestCasesReader.readTestCases;
  */
 
 @RolesAllowed({"ROLE_ADMIN"})
-@Route("create-assignment")
+@Route(value = "create-assignment", layout = MainLayout.class)
 public class CreateAssignmentView extends VerticalLayout {
 
     @Autowired
