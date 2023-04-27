@@ -12,6 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.RolesAllowed;
 
+/**
+ * A class that builds a UI for creating a new course
+ *
+ * @author Fahd Alsahali
+ * @version 1.0
+ * @date 13/03/2023
+ */
+
 @RolesAllowed({"ROLE_ADMIN"})
 @Route(value = "create-course", layout = MainLayout.class)
 public class CreateCourseView extends VerticalLayout {

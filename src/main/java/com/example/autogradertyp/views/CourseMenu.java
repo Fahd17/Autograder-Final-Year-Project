@@ -15,6 +15,13 @@ import com.vaadin.flow.router.RouteParameters;
 import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
+/**
+ * A class that builds a UI for courses menu
+ *
+ * @author Fahd Alsahali
+ * @version 1.0
+ * @date 5/04/2023
+ */
 
 @RolesAllowed({"ROLE_ADMIN"})
 @Route(value = "courses", layout = MainLayout.class)

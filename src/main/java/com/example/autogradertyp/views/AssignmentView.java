@@ -21,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
@@ -34,7 +35,7 @@ import java.util.Optional;
  * @date 01/02/2023
  */
 
-@PermitAll
+@RolesAllowed({"ROLE_ADMIN", "ROLE_USER"})
 @Route(value = "assignment/:assignment-ID?", layout = MainLayout.class)
 public class AssignmentView extends VerticalLayout implements BeforeEnterObserver {
 

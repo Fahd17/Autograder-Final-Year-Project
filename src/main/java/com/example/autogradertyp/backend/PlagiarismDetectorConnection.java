@@ -13,12 +13,20 @@ import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+
+/**
+ * The class is used to communicate with the plagiarism detection api
+ *
+ * @author Fahd Alsahali
+ * @version 1.0
+ * @date 06/04/2023
+ */
 public class PlagiarismDetectorConnection {
 
     private static String apiEndpoint = "https://codequiry.com/api/v1/";
     private static String apiKey = "f566d804d37ef4b8eb90c572933f1266099746525490f073ed1e115e0d679fec";
 
-    public static OkHttpClient getOkHttpClientInstance() {
+    private static OkHttpClient getOkHttpClientInstance() {
 
         OkHttpClient okHttpClient = new OkHttpClient()
                 .newBuilder()
@@ -28,6 +36,13 @@ public class PlagiarismDetectorConnection {
         return okHttpClient;
     }
 
+    /**
+     * A method to create a new plagiarism check
+     *
+     * @param name The name of the new check
+     * @return The response of the API
+     * @throws Exception
+     */
     public static JSONObject crateCheck(String name) throws Exception {
 
         HttpUrl url = HttpUrl.parse(apiEndpoint).newBuilder()
@@ -56,9 +71,18 @@ public class PlagiarismDetectorConnection {
         return jsonResponse;
     }
 
+    /**
+     * A method that uploads a submission file to the plagiarism detection api
+     *
+     * @param filename The name of the file uploaded
+     * @param input The bytes of the file uploaded
+     * @param checkId The Id of the check the submission is uploaded to
+     * @return The response of the API
+     * @throws Exception
+     */
     public static JSONObject uploadFile(String filename, byte[] input, String checkId) throws Exception {
 
-        String FILEPATH = ".\\submissions_directory1\\" + filename + ".zip";
+        String FILEPATH = ".\\submissions_directory\\" + filename + ".zip";
         File file = new File(FILEPATH);
 
         try {
@@ -106,6 +130,13 @@ public class PlagiarismDetectorConnection {
 
     }
 
+    /**
+     * A method to start the plagiarism check
+     *
+     * @param checkId The Id of the plagiarism check
+     * @return The response of the API
+     * @throws Exception
+     */
     public static JSONObject startCheck(String checkId) throws Exception {
 
         //Building the url
@@ -135,6 +166,13 @@ public class PlagiarismDetectorConnection {
         return jsonResponse;
     }
 
+    /**
+     * A method to get the plagiarism result
+     *
+     * @param checkId The Id of the plagiarism check
+     * @return The response of the API
+     * @throws Exception
+     */
     public static JSONObject getResultsOverview(String checkId) throws Exception {
 
         //Building the url

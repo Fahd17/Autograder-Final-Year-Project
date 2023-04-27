@@ -21,11 +21,21 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Stack;
 
-@PermitAll
+
+/**
+ * A class that builds a UI for plagiarism report
+ *
+ * @author Fahd Alsahali
+ * @version 1.0
+ * @date 6/04/2023
+ */
+
+@RolesAllowed({"ROLE_ADMIN"})
 @Route(value = "plagiarism/:assignment-ID?",  layout = MainLayout.class)
 public class PlagiarismReportView extends VerticalLayout implements BeforeEnterObserver {
 

@@ -35,6 +35,13 @@ import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Optional;
 
+/**
+ * A class that builds a UI for course assignments view
+ *
+ * @author Fahd Alsahali
+ * @version 1.0
+ * @date 13/11/2022
+ */
 
 @RolesAllowed({"ROLE_ADMIN"})
 @Route(value = "course/:course-ID?", layout = MainLayout.class)
