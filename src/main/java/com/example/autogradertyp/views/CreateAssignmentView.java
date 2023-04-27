@@ -75,11 +75,13 @@ public class CreateAssignmentView extends VerticalLayout {
 
         TextField assignmentName = new TextField();
         assignmentName.setLabel("Entre assignment name:");
+        assignmentName.setId("AssignmentName");
         add(assignmentName);
 
         createCoursesSelectMenu(courseService);
 
         DateTimePicker deadline = new DateTimePicker("Assignment deadline:");
+        deadline.setId("DeadlinePicker");
         add(deadline);
 
         Label testCaseMessage = new Label("Entre test case information:");
@@ -90,14 +92,17 @@ public class CreateAssignmentView extends VerticalLayout {
 
         TextField testCaseInput = new TextField();
         testCaseInput.setLabel("Input:");
+        testCaseInput.setId("testCaseInput");
         testCaseLayout.add(testCaseInput);
 
         TextField testCaseExpectedOutput = new TextField();
         testCaseExpectedOutput.setLabel("Expected output:");
+        testCaseExpectedOutput.setId("testCaseExpectedOutput");
         testCaseLayout.add(testCaseExpectedOutput);
 
         TextField numberOfMarks = new TextField();
         numberOfMarks.setLabel("Marks:");
+        numberOfMarks.setId("numberOfMarks");
         testCaseLayout.add(numberOfMarks);
 
         add(new H1("To test cases from a file."));
@@ -136,6 +141,7 @@ public class CreateAssignmentView extends VerticalLayout {
         });
 
         Button submit = new Button("Create");
+        submit.setId("CreateAssignment");
         add(submit);
 
         submit.addClickListener(e -> {
@@ -186,6 +192,7 @@ public class CreateAssignmentView extends VerticalLayout {
 
         select = new Select<>();
         select.setLabel("Course");
+        select.setId("SelectCourse");
 
         select.setItemLabelGenerator(Course::getName);
 
@@ -249,6 +256,7 @@ public class CreateAssignmentView extends VerticalLayout {
         MemoryBuffer memoryBuffer = new MemoryBuffer();
 
         Upload upload = new Upload(memoryBuffer);
+        upload.setId("TestCaseFileUpload");
         upload.addFinishedListener(e -> {
             SaveUploadedFile(memoryBuffer, e.getFileName());
             String submissionFileName = e.getFileName().replace(".json", "");

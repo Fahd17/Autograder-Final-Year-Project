@@ -21,7 +21,7 @@ import javax.annotation.security.PermitAll;
  */
 
 @PermitAll
-@Route(value = "main-menu", layout = MainLayout.class)
+@Route(value = "", layout = MainLayout.class)
 public class MainMenu extends VerticalLayout {
 
     /**
@@ -46,6 +46,7 @@ public class MainMenu extends VerticalLayout {
 
 
         Button createAssignmentButton = new Button("Manage courses");
+        createAssignmentButton.setId("ManageCourses");
         createAssignmentButton.addClickListener(e ->
 
                 createAssignmentButton.getUI().ifPresent(ui -> ui.navigate(CourseMenu.class)));

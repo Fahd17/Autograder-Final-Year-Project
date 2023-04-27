@@ -45,29 +45,34 @@ public class RegisterView extends VerticalLayout {
 
         TextField studentNumber = new TextField();
         studentNumber.setLabel("Entre student number:");
+        studentNumber.setId("studentNumber");
         add(studentNumber);
 
         TextField userName = new TextField();
         userName.setLabel("Entre user name:");
+        userName.setId("userName");
         add(userName);
 
         TextField email = new TextField();
         email.setLabel("Entre email:");
+        email.setId("email");
         add(email);
 
         TextField password = new TextField();
         password.setLabel("Entre password:");
+        password.setId("password");
         add(password);
 
-        Button submit = new Button("Create");
-        add(submit);
+        Button create = new Button("Create");
+        create.setId("createUserButton");
+        add(create);
 
 
-        submit.addClickListener(e -> {
+        create.addClickListener(e -> {
             try {
                 addUser(userName.getValue(), password.getValue(), email.getValue(), studentNumber.getValue());
             } finally {
-                submit.getUI().ifPresent(ui -> ui.navigate(LoginView.class));
+                create.getUI().ifPresent(ui -> ui.navigate(LoginView.class));
             }
         });
 

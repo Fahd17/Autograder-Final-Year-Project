@@ -61,6 +61,7 @@ public class CourseMenu extends VerticalLayout {
         HorizontalLayout bottomRow = new HorizontalLayout();
         Button newCourse = new Button("Create new course");
         Button newAssignment = new Button("Create new assignment");
+        newAssignment.setId("NewAssignment");
         Button goBackButton = new Button("Back");
         bottomRow.add(goBackButton);
         add(newCourse,newAssignment, bottomRow);

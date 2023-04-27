@@ -62,6 +62,7 @@ public class AssignmentMenu extends VerticalLayout {
                                     new RouteParameters("assignment-ID", String.valueOf(assignment.getId())))));
                     assignmentChoice.setHeight(30, Unit.MM);
                     assignmentChoice.setWidth(60, Unit.MM);
+                    assignmentChoice.setId(assignment.getAssignmentName());
                     assignmentsOptions.add(assignmentChoice);
 
                 }
