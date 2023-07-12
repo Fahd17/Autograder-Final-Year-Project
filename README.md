@@ -2,7 +2,7 @@
 <h2>Introduction</h2>
     <p>Welcome to the Automated Programming Assignment Grading Software! This software aims to alleviate the exhausting and time-consuming task of manually grading programming assignments for lecturers. As programming courses grow in popularity and the number of assignments increases, there is a pressing need for automating the grading process. This repository provides a comprehensive solution that combines various functionalities into one unique software, addressing the existing gap in the market.</p>
 
-    <h2>Features</h2>
+<h2>Features</h2>
     <ul>
         <li><strong>Submission Collection and Grading:</strong> The software automates the process of collecting and grading students' programming submissions, making it efficient and error-free.</li>
         <li><strong>RESTful Execution:</strong> Student submissions are executed within a Docker container using REST, ensuring a secure and isolated environment for evaluation.</li>
