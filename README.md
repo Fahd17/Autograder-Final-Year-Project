@@ -15,5 +15,3 @@
 <h2>Background Research</h2>
     <p>Extensive research has been conducted to develop effective methods for grading programs and to determine the appropriate technology for building such software. This project builds upon the existing knowledge in the field and incorporates best practices to deliver a robust and reliable grading solution.</p>
 
-<h2>Development Model and Process</h2>
-    <p>The software has been developed using an iterative and collaborative development model. The development process involved multiple stages, including requirements gathering, design, implementation, and testing. Throughout the development cycle, the team made well-justified decisions to ensure the software's effectiveness and usability.</p>
